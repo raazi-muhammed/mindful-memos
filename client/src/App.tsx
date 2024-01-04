@@ -1,11 +1,29 @@
 import { Button } from "@/components/ui/button";
+import { LoginPage } from "./pages/LoginPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { SignUpPage } from "./pages/SignUpPage";
 
 function App() {
     return (
-        <div>
-            <p className="bg-slate-100 p-4">Hlooo</p>
-            <h1>Vite + React + Docker</h1>
-            <Button>Click me</Button>
+        <div className="grid place-items-center h-screen">
+            <BrowserRouter>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <div>
+                                <p>Home Page</p>
+                                <Link to="login">
+                                    <Button>login</Button>
+                                </Link>
+                            </div>
+                        }
+                    />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="sign-up" element={<SignUpPage />} />
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }
