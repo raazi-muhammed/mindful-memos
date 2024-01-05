@@ -11,7 +11,8 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
+import API from "../../lib/API";
+import { useToast } from "../ui/use-toast";
 
 const formSchema = z.object({
     email: z.string().email().min(2, {
@@ -21,14 +22,16 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+    const { toast } = useToast();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        axios.post("http://localhost:4000/user/login", values).then((res) => {
-            console.log(res);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const response = await API.post("/user/login", values, {
+            toaster: toast,
         });
+        console.log(response);
     }
 
     return (

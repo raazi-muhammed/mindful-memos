@@ -3,6 +3,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { SignUpPage } from "./pages/SignUpPage";
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route path="sign-up" element={<SignUpPage />} />
                 </Routes>
             </BrowserRouter>
+            <Toaster />
         </div>
     );
 }
