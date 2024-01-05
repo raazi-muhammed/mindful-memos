@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import userRoutes from "./routes/user.routes";
+import adminRoutes from "./routes/admin.routes";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/admin", adminRoutes);
 
 app.use(errorHandler);
 

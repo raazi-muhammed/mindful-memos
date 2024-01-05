@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { SignUpPage } from "./pages/SignUpPage";
 import { Toaster } from "@/components/ui/toaster";
+import { AdminLoginPage } from "./pages/AdminLoginPage";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                     />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="sign-up" element={<SignUpPage />} />
+                    <Route path="admin/login" element={<AdminLoginPage />} />
                 </Routes>
             </BrowserRouter>
             <Toaster />
