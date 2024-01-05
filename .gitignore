@@ -1,6 +1,6 @@
 client/node_modules/
 server/node_modules/
-server/dist
+server/dist/
 
 bower_components/
 npm-debug.log

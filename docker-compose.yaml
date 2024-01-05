@@ -8,6 +8,11 @@ services:
         volumes:
             - ./server:/api
             - /api/node_modules
+            - /api/dist
+        environment:
+            PORT: 4000
+            DB_URL: mongodb+srv://raaziTyping:thisIsAStrongPassword@cluster0.6a4yhtt.mongodb.net/?retryWrites=true&w=majority
+
     web:
         build: ./client
         container_name: web_c
@@ -16,3 +21,6 @@ services:
         volumes:
             - ./client:/web
             - /web/node_modules
+
+volumes:
+    app-data:

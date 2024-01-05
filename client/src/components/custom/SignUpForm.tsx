@@ -12,10 +12,11 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
 
 const formSchema = z.object({
-    email: z.string().email().min(2, {
-        message: "Username must be at least 2 characters.",
+    email: z.string().email().min(10, {
+        message: "Username must be at least 2 char.",
     }),
     username: z.string().min(3),
     password: z.string().min(6),
@@ -28,7 +29,14 @@ export default function SignUpForm() {
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        axios
+            .post("http://localhost:4000/user/sign-up", values)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     return (

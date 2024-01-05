@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -12,6 +11,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
 
 const formSchema = z.object({
     email: z.string().email().min(2, {
@@ -26,7 +26,9 @@ export default function LoginForm() {
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        axios.post("http://localhost:4000/user/login", values).then((res) => {
+            console.log(res);
+        });
     }
 
     return (
