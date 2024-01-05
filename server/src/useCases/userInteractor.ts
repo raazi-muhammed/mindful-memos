@@ -30,3 +30,15 @@ export async function createUserInteractor(
         return database.insertUser(user);
     }
 }
+
+export async function userProfileInteractor(
+    database: DataBaseType,
+    id: string
+) {
+    const user = await database.getUserById(id);
+    if (user) {
+        return user;
+    } else {
+        return new Error("No user found");
+    }
+}

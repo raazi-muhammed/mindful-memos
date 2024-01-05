@@ -3,6 +3,7 @@ import database from "../database/database";
 import {
     createUserInteractor,
     loginUserInteractor,
+    userProfileInteractor,
 } from "../useCases/userInteractor";
 
 export async function signUpUser(
@@ -42,6 +43,31 @@ export async function loginUser(
         password: string;
     };
     const response = await loginUserInteractor(database, loginDetails);
+
+    if (response instanceof Error) {
+        res.status(500).json({
+            success: false,
+            message: response.message,
+        });
+        return;
+    }
+    res.status(200).json({
+        success: true,
+        user: response,
+    });
+}
+
+export async function userProfile(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const userId = req.query.id as string;
+    if (!userId) {
+        return new Error("Bad request");
+    }
+
+    const response = await userProfileInteractor(database, userId);
 
     if (response instanceof Error) {
         res.status(500).json({
