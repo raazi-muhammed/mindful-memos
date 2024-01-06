@@ -1,4 +1,5 @@
 import { UserObjectType, UserType } from "../models/user.model";
+import { ErrorTypes, throwError } from "../utils/CustomErrorHandler";
 
 type MakeUserType = {
     getHashedPassword: (name: string) => Promise<string>;
@@ -17,11 +18,10 @@ export async function logUser(
     const isPassCorrect = await comparePassword(password, user.password);
     console.log(isPassCorrect);
 
-    if (isPassCorrect) {
-        return user;
-    } else {
-        return new Error("Incorrect password");
+    if (!isPassCorrect) {
+        return throwError(ErrorTypes.BAD_REQUEST, "Incorrect password");
     }
+    return user;
 }
 
 export async function makeUser(
@@ -29,7 +29,10 @@ export async function makeUser(
     { password, username, email }: MakeUserType["data"]
 ) {
     if (password.length < 6) {
-        throw new Error("Password should at least 6 characters");
+        throwError(
+            ErrorTypes.BAD_REQUEST,
+            "Password should be greater than 6 characters"
+        );
     }
 
     const encryptedPassword = await getHashedPassword(password);

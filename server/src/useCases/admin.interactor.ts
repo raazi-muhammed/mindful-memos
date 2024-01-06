@@ -1,5 +1,6 @@
 import { DataBaseType } from "../database/database";
 import { verifyAdmin } from "../entities/admin.entity";
+import { ErrorTypes, throwError } from "../utils/CustomErrorHandler";
 import { comparePassword } from "../utils/encryption";
 
 export async function loginAdminInteractor({
@@ -10,7 +11,7 @@ export async function loginAdminInteractor({
     password: string;
 }) {
     if (!process.env.ADMIN_USERNAME || !process.env.ADMIN_PASSWORD) {
-        return new Error("Admin username and password not found");
+        return throwError(ErrorTypes.INTERNAL_SERVER_ERROR, "Invalid input");
     }
     const Credentials = {
         username: process.env.ADMIN_USERNAME,

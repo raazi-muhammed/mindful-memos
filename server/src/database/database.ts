@@ -49,7 +49,6 @@ async function editUser(
             { upsert: true }
         );
     }
-    console.log(newUser);
     return;
 }
 

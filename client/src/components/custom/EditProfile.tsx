@@ -10,15 +10,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import API from "@/lib/API";
 import { UserType } from "@/types/types";
 import { SyntheticEvent, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { convertToBase64 } from "@/utils/converter";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { trpc } from "@/lib/trpc";
 
 export function EditProfile({ userDetails }: { userDetails: UserType }) {
     const { toast } = useToast();
+    const userEditor = trpc.user.edit.useMutation();
 
     const [username, setUsername] = useState(userDetails.username);
     const [imageBase64, setimageBase64] = useState<string | undefined>(
@@ -32,10 +33,15 @@ export function EditProfile({ userDetails }: { userDetails: UserType }) {
             email: userDetails.email,
             avatar: imageBase64,
         };
-        console.log(values);
-        API.editUser(values, { toaster: toast }).then((response) => {
-            console.log(response);
-        });
+
+        userEditor
+            .mutateAsync(values)
+            .then((res) => {
+                toast({ description: "Edited" });
+            })
+            .catch((error) => {
+                toast({ description: error?.message });
+            });
     };
     const onFileChange = async (file: File | null) => {
         if (!file) return;

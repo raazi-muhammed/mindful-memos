@@ -1,11 +1,26 @@
-class ErrorHandler extends Error {
-    statusCode: number;
+import { TRPCError } from "@trpc/server";
 
-    constructor(message: string, statusCode: number) {
-        super(message);
-        this.statusCode = statusCode;
-        //Error.captureStackTrace(this, this.constructor);
-    }
+export enum ErrorTypes {
+    PARSE_ERROR = "PARSE_ERROR",
+    BAD_REQUEST = "BAD_REQUEST",
+    INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
+    NOT_IMPLEMENTED = "NOT_IMPLEMENTED",
+    UNAUTHORIZED = "UNAUTHORIZED",
+    FORBIDDEN = "FORBIDDEN",
+    NOT_FOUND = "NOT_FOUND",
+    METHOD_NOT_SUPPORTED = "METHOD_NOT_SUPPORTED",
+    TIMEOUT = "TIMEOUT",
+    CONFLICT = "CONFLICT",
+    PRECONDITION_FAILED = "PRECONDITION_FAILED",
+    PAYLOAD_TOO_LARGE = "PAYLOAD_TOO_LARGE",
+    UNPROCESSABLE_CONTENT = "UNPROCESSABLE_CONTENT",
+    TOO_MANY_REQUESTS = "TOO_MANY_REQUESTS",
+    CLIENT_CLOSED_REQUEST = "CLIENT_CLOSED_REQUEST",
 }
 
-export default ErrorHandler;
+export function throwError(code: ErrorTypes, message: string) {
+    throw new TRPCError({
+        code: code,
+        message: message,
+    });
+}

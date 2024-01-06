@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
-import API from "../lib/API";
-import { UserType } from "@/types/types";
 import { EditProfile } from "@/components/custom/EditProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { trpc } from "@/lib/trpc";
+import { UserType } from "@/types/types";
 
 const UserProfile = () => {
     const userId = "65980087e960c66b8d8b2ef0";
-
-    const [userData, setUserData] = useState<UserType | null>(null);
-    useEffect(() => {
-        API.getProfile(userId).then((data) => {
-            console.log(data);
-            setUserData(data.user as UserType);
-        });
-    }, []);
+    const response = trpc.user.profile.useQuery(userId);
+    const userData = response?.data as UserType;
 
     return (
         <div className="p-8">

@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
-import API from "@/lib/API";
 import { useNavigate } from "react-router-dom";
+import { trpc } from "@/lib/trpc";
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -25,15 +25,21 @@ const formSchema = z.object({
 export default function AdminLoginForm() {
     const navigate = useNavigate();
     const { toast } = useToast();
+    const adminLogin = trpc.admin.login.useMutation();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        API.adminLogin(values, { toaster: toast }).then((response) => {
-            navigate("/admin/dashboard");
-            console.log(response);
-        });
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        adminLogin
+            .mutateAsync(values)
+            .then((res) => {
+                toast({ description: "Logged In" });
+                navigate("/admin/dashboard");
+            })
+            .catch((error) => {
+                toast({ description: error?.message });
+            });
     }
 
     return (

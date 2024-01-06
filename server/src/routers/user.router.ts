@@ -43,24 +43,3 @@ export const userRouter = trpc.router({
         return await editProfile(opts.input);
     }),
 });
-
-/* 
-.output((out) => out as UserType | Error)
-
-
-.output(
-    z.union([
-        z.object({
-            _id: z.string(),
-            username: z.string(),
-            email: z.string(),
-            password: z.string(),
-        }),
-        z.object({
-            name: z.string(),
-            message: z.string(),
-        }),
-    ])
-)
-
-*/

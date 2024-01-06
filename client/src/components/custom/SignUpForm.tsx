@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
-import API from "@/lib/API";
+import { trpc } from "@/lib/trpc";
 
 const formSchema = z.object({
     email: z.string().email().min(10, {
@@ -26,18 +26,23 @@ const formSchema = z.object({
 
 export default function SignUpForm() {
     const { toast } = useToast();
+    const navigate = useNavigate();
+    const userSignUp = trpc.user.signUp.useMutation();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        /* const response = await API.post("/user/sign-up", values, {
-            toaster: toast,
-        });
-        console.log(response); */
-        API.userSignUp(values, { toaster: toast }).then((response) => {
-            console.log(values);
-        });
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        userSignUp
+            .mutateAsync(values)
+            .then((res) => {
+                toast({ description: "Account Created" });
+                navigate("/login");
+            })
+            .catch((error) => {
+                toast({ description: error?.message });
+            });
     }
 
     return (

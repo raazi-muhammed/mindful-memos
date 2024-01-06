@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
-import API from "@/lib/API";
+import { trpc } from "@/lib/trpc";
 
 const formSchema = z.object({
     email: z.string().email().min(2, {
@@ -23,17 +23,20 @@ const formSchema = z.object({
 
 export default function LoginForm() {
     const { toast } = useToast();
+    const userCreator = trpc.user.login.useMutation();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        API.userLogin(values, { toaster: toast })
-            .then((response) => {
-                console.log(response);
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        userCreator
+            .mutateAsync(values)
+            .then((res) => {
+                toast({ description: "Logged In" });
             })
-            .catch((err) => {
-                console.log(err);
+            .catch((error) => {
+                toast({ description: error?.message });
             });
     }
 

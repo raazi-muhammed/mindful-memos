@@ -7,24 +7,49 @@ import HomePage from "./pages/HomePage";
 import UserProfile from "./pages/UserProfile";
 import AdminHomePage from "./pages/AdminHomePage";
 
+/* TRPC */
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { httpBatchLink } from "@trpc/client";
+import { useState } from "react";
+import { trpc } from "./lib/trpc";
+/* TRPC */
+
 function App() {
+    const [queryClient] = useState(() => new QueryClient());
+    const [trpcClient] = useState(() =>
+        trpc.createClient({
+            links: [
+                httpBatchLink({
+                    url: "http://localhost:4000/api/v1",
+                }),
+            ],
+        })
+    );
+
     return (
-        <div className="grid place-items-center h-screen">
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/profile" element={<UserProfile />} />
-                    <Route path="/sign-up" element={<SignUpPage />} />
-                    <Route path="/admin/login" element={<AdminLoginPage />} />
-                    <Route
-                        path="/admin/dashboard"
-                        element={<AdminHomePage />}
-                    />
-                </Routes>
-            </BrowserRouter>
-            <Toaster />
-        </div>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+            <QueryClientProvider client={queryClient}>
+                <div className="grid place-items-center h-screen">
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/profile" element={<UserProfile />} />
+                            <Route path="/sign-up" element={<SignUpPage />} />
+                            <Route
+                                path="/admin/login"
+                                element={<AdminLoginPage />}
+                            />
+                            <Route
+                                path="/admin/dashboard"
+                                element={<AdminHomePage />}
+                            />
+                        </Routes>
+                    </BrowserRouter>
+                    <Toaster />
+                </div>
+            </QueryClientProvider>
+        </trpc.Provider>
     );
 }
 

@@ -1,6 +1,7 @@
 import { DataBaseType } from "../database/database";
 import { logUser, makeUser } from "../entities/user.entity";
 import { UserObjectType } from "../models/user.model";
+import { ErrorTypes, throwError } from "../utils/CustomErrorHandler";
 import { getHashedPassword, comparePassword } from "../utils/encryption";
 
 export async function loginUserInteractor(
@@ -8,7 +9,7 @@ export async function loginUserInteractor(
     { email, password }: { email: string; password: string }
 ) {
     const user = await database.getUserByEmail(email);
-    if (!user) return new Error("No user found");
+    if (!user) return throwError(ErrorTypes.BAD_REQUEST, "No User found");
 
     return logUser(comparePassword, password, user);
 }
@@ -18,7 +19,8 @@ export async function createUserInteractor(
     { email, username, password }: UserObjectType
 ) {
     const alreadyUser = await database.getUserByEmail(email);
-    if (alreadyUser) return new Error("User already exist");
+    if (alreadyUser)
+        return throwError(ErrorTypes.BAD_REQUEST, "User already exists");
 
     const user = await makeUser(getHashedPassword, {
         email,
@@ -26,10 +28,12 @@ export async function createUserInteractor(
         password,
     });
 
-    if (!user) return new Error("Invalid data");
+    if (!user) throwError(ErrorTypes.BAD_REQUEST, "Invalid Data");
 
     const createdUser = await database.insertUser(user);
-    if (!createdUser) return new Error("Cannot crate user");
+    if (!createdUser) {
+        throwError(ErrorTypes.BAD_REQUEST, "Cannot create a user");
+    }
 
     return createdUser;
 }
@@ -39,7 +43,7 @@ export async function userProfileInteractor(
     id: string
 ) {
     const user = await database.getUserById(id);
-    if (!user) return new Error("No user found");
+    if (!user) return throwError(ErrorTypes.BAD_REQUEST, "No user found");
     return user;
 }
 
@@ -48,13 +52,10 @@ export async function editUserInteractor(
     { email, username, avatar }: Omit<UserObjectType, "password">
 ) {
     const user = await database.getUserByEmail(email);
-    if (!user) return new Error("No user found");
+    if (!user) return throwError(ErrorTypes.BAD_REQUEST, "No user found");
 
     if (avatar) {
-        console.log("editing");
-
         await database.editUser(user, { username, avatar });
-        console.log("editied");
     } else {
         await database.editUser(user, { username });
     }

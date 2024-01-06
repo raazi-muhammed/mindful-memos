@@ -1,10 +1,15 @@
+import { ErrorTypes, throwError } from "../utils/CustomErrorHandler";
+
 export async function verifyAdmin(
     comparePassword: (pass1: string, pass2: string) => Promise<boolean>,
     credentials: { username: string; password: string },
     toCheck: { username: string; password: string }
 ) {
     if (credentials.username !== toCheck.username) {
-        return new Error("Incorrect username");
+        return throwError(
+            ErrorTypes.INTERNAL_SERVER_ERROR,
+            "Username Incorrect"
+        );
     }
 
     const encryptedPassword = await comparePassword(
@@ -14,6 +19,9 @@ export async function verifyAdmin(
     if (encryptedPassword) {
         return encryptedPassword;
     } else {
-        return new Error("Password incorrect");
+        return throwError(
+            ErrorTypes.INTERNAL_SERVER_ERROR,
+            "Password Incorrect"
+        );
     }
 }
