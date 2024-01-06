@@ -91,10 +91,22 @@ export async function editUser(
     return result;
 }
 
+export async function getUsersAdmin(options?: Options) {
+    const result = await client.admin.users.query();
+    if (options?.toaster && result?.message) {
+        options.toaster({
+            description: result?.message || "Invalid Details",
+        });
+    }
+    if (!result.success) throw new Error(result.message);
+    return result;
+}
+
 export default {
     getProfile,
     userLogin,
     userSignUp,
     adminLogin,
     editUser,
+    getUsersAdmin,
 };

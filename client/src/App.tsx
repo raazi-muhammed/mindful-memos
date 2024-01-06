@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { AdminLoginPage } from "./pages/AdminLoginPage";
 import HomePage from "./pages/HomePage";
 import UserProfile from "./pages/UserProfile";
+import AdminHomePage from "./pages/AdminHomePage";
 
 function App() {
     return (
@@ -16,6 +17,10 @@ function App() {
                     <Route path="/profile" element={<UserProfile />} />
                     <Route path="/sign-up" element={<SignUpPage />} />
                     <Route path="/admin/login" element={<AdminLoginPage />} />
+                    <Route
+                        path="/admin/dashboard"
+                        element={<AdminHomePage />}
+                    />
                 </Routes>
             </BrowserRouter>
             <Toaster />

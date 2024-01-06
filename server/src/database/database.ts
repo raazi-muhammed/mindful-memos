@@ -4,6 +4,7 @@ export type DataBaseType = {
     insertUser: (data: UserObjectType) => Promise<UserType | undefined>;
     getUserByEmail: (email: string) => Promise<UserType | undefined>;
     getUserById: (id: string) => Promise<UserType | undefined>;
+    getUsers: () => Promise<UserType[]>;
     editUser: (
         user: UserType,
         { username, avatar }: { username: string; avatar?: string }
@@ -13,6 +14,11 @@ export type DataBaseType = {
 async function insertUser(data: UserObjectType) {
     const user = await User.create(data);
     return user as UserType | undefined;
+}
+
+async function getUsers() {
+    const user = await User.find({});
+    return user as UserType[];
 }
 
 async function getUserByEmail(email: string) {
@@ -52,5 +58,6 @@ const database: DataBaseType = {
     getUserByEmail,
     getUserById,
     editUser,
+    getUsers,
 };
 export default database;

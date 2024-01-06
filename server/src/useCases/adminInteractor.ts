@@ -1,3 +1,4 @@
+import { DataBaseType } from "../database/database";
 import { verifyAdmin } from "../entities/admin.entity";
 import { comparePassword } from "../utils/encryption";
 
@@ -17,4 +18,8 @@ export async function loginAdminInteractor({
     };
 
     return verifyAdmin(comparePassword, Credentials, { password, username });
+}
+
+export async function getUsersInteractor(database: DataBaseType) {
+    return await database.getUsers();
 }

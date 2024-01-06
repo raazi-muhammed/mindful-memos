@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import API from "@/lib/API";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -22,6 +23,7 @@ const formSchema = z.object({
 });
 
 export default function AdminLoginForm() {
+    const navigate = useNavigate();
     const { toast } = useToast();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -29,6 +31,7 @@ export default function AdminLoginForm() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         API.adminLogin(values, { toaster: toast }).then((response) => {
+            navigate("/admin/dashboard");
             console.log(response);
         });
     }
@@ -45,7 +48,7 @@ export default function AdminLoginForm() {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>Username</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
