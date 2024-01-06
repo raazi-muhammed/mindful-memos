@@ -1,28 +1,26 @@
-import { NextFunction, Request, Response } from "express";
 import { loginAdminInteractor } from "../useCases/adminInteractor";
-import { getHashedPassword } from "../utils/encryption";
+type ErrorResponse = {
+    success: false;
+    message: string;
+};
 
-export async function loginAdmin(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    const loginDetails = req.body as {
-        username: string;
-        password: string;
-    };
-
+export async function loginAdmin(loginDetails: {
+    username: string;
+    password: string;
+}) {
     const response = await loginAdminInteractor(loginDetails);
 
     if (response instanceof Error) {
-        res.status(500).json({
+        const res: ErrorResponse = {
             success: false,
             message: response.message,
-        });
-        return;
+        };
+        return res;
     }
-    res.status(200).json({
+
+    const res: { success: true; message: string } = {
         success: true,
-        user: response,
-    });
+        message: "Login successful",
+    };
+    return res;
 }

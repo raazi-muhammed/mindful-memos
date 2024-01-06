@@ -11,8 +11,8 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import API from "../../lib/API";
 import { useToast } from "../ui/use-toast";
+import API from "@/lib/API";
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -28,10 +28,9 @@ export default function AdminLoginForm() {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        const response = await API.post("/admin/login", values, {
-            toaster: toast,
+        API.adminLogin(values, { toaster: toast }).then((response) => {
+            console.log(response);
         });
-        console.log(response);
     }
 
     return (

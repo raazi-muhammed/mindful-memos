@@ -1,7 +1,5 @@
-import axios from "axios";
-const server = "http://localhost:4000";
-
-axios.defaults.baseURL = server;
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { AppRouter } from "../../../server/src/index";
 type Options = {
     toaster?: ({
         title,
@@ -12,53 +10,70 @@ type Options = {
     }) => void;
 };
 
-export async function get(url: string, params = {}, options: Options = {}) {
-    return axios({
-        url,
-        method: "GET",
-        withCredentials: true,
-        params,
-    })
-        .then((res) => res.data)
-        .catch((err) => {
-            console.log(err);
-            if (options?.toaster) {
-                options.toaster({
-                    description:
-                        err.response?.data?.message || "Invalid Details",
-                });
-            }
-        });
+const client = createTRPCProxyClient<AppRouter>({
+    links: [httpBatchLink({ url: "http://localhost:4000/api/v1/" })],
+});
+
+export async function getProfile(id: string) {
+    const result = await client.user.profile.query(id);
+    return result;
 }
 
-export async function post(url: string, data = {}, options: Options = {}) {
-    return axios({
-        url,
-        method: "POST",
-        withCredentials: true,
-        data,
-    })
-        .then((res) => {
-            if (options?.toaster) {
-                options.toaster({
-                    description: res?.data?.message || "Successful",
-                });
-            }
-            return res.data;
-        })
-        .catch((err) => {
-            console.log(err);
-            if (options?.toaster) {
-                options.toaster({
-                    description:
-                        err.response?.data?.message || "Invalid Details",
-                });
-            }
-            return err.response.data;
+export async function adminLogin(
+    userDetails: {
+        username: string;
+        password: string;
+    },
+    options: Options
+) {
+    const result = await client.admin.login.mutate(userDetails);
+    if (options?.toaster && result?.message) {
+        options.toaster({
+            description: result?.message || "Invalid Details",
         });
+    }
+    if (!result.success) throw new Error(result.message);
+    return result;
+}
+
+export async function userLogin(
+    userDetails: {
+        email: string;
+        password: string;
+    },
+    options: Options
+) {
+    const result = await client.user.login.mutate(userDetails);
+    if (options?.toaster && result?.message) {
+        options.toaster({
+            description: result?.message || "Invalid Details",
+        });
+    }
+    if (!result.success) throw new Error(result.message);
+    return result;
+}
+
+export async function userSignUp(
+    userDetails: {
+        email: string;
+        username: string;
+        password: string;
+    },
+    options: Options
+) {
+    const result = await client.user.signUp.mutate(userDetails);
+    if (options?.toaster && result?.message) {
+        options.toaster({
+            description: result?.message || "Invalid Details",
+        });
+    }
+    if (!result.success) throw new Error(result.message);
+    return result;
 }
 
 export default {
-    get,
-    post,
+    getProfile,
+    userLogin,
+    userSignUp,
+    adminLogin,
 };

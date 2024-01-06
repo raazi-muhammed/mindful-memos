@@ -11,8 +11,8 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import API from "../../lib/API";
 import { useToast } from "../ui/use-toast";
+import API from "@/lib/API";
 
 const formSchema = z.object({
     email: z.string().email().min(2, {
@@ -28,10 +28,13 @@ export default function LoginForm() {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        const response = await API.post("/user/login", values, {
-            toaster: toast,
-        });
-        console.log(response);
+        API.userLogin(values, { toaster: toast })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     return (

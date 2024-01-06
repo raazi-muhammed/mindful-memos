@@ -1,21 +1,24 @@
 import User, { UserObjectType, UserType } from "../models/user.model";
 
 export type DataBaseType = {
-    insertUser: (data: UserObjectType) => void;
-    getUserByEmail: (email: string) => any;
-    getUserById: (id: string) => any;
+    insertUser: (data: UserObjectType) => Promise<UserType | undefined>;
+    getUserByEmail: (email: string) => Promise<UserType | undefined>;
+    getUserById: (id: string) => Promise<UserType | undefined>;
 };
 
 async function insertUser(data: UserObjectType) {
-    return await User.create(data);
+    const user = await User.create(data);
+    return user as UserType | undefined;
 }
 
 async function getUserByEmail(email: string) {
-    return await User.findOne({ email: email });
+    const user = await User.findOne({ email: email });
+    return user as UserType | undefined;
 }
 
 async function getUserById(id: string) {
-    return await User.findById(id);
+    const user = await User.findById(id);
+    return user as UserType | undefined;
 }
 
 const database: DataBaseType = {

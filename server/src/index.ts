@@ -1,9 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import userRoutes from "./routes/user.routes";
-import adminRoutes from "./routes/admin.routes";
 import dotenv from "dotenv";
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
 dotenv.config();
 
 const app = express();
@@ -11,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 import "./database/connectDb";
-import errorHandler from "./middlewares/errorHandler";
+import { appRouter } from "./routers/index";
 
 app.use(
     cors({
@@ -20,18 +19,10 @@ app.use(
     })
 );
 
-app.get("/", (req: Request, res: Response) => {
-    return res.status(200).json({
-        success: true,
-        message: "Hello world",
-    });
-});
-
-app.use("/user", userRoutes);
-app.use("/admin", adminRoutes);
-
-app.use(errorHandler);
+app.use("/api/v1", createExpressMiddleware({ router: appRouter }));
 
 app.listen(4000, () => {
     console.log(`Server Started\t: http://localhost:4000`);
 });
+
+export type AppRouter = typeof appRouter;

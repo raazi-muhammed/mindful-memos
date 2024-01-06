@@ -26,9 +26,12 @@ export async function createUserInteractor(
         password,
     });
 
-    if (user) {
-        return database.insertUser(user);
-    }
+    if (!user) return new Error("Invalid data");
+
+    const createdUser = await database.insertUser(user);
+    if (!createdUser) return new Error("Cannot crate user");
+
+    return createdUser;
 }
 
 export async function userProfileInteractor(
@@ -36,9 +39,6 @@ export async function userProfileInteractor(
     id: string
 ) {
     const user = await database.getUserById(id);
-    if (user) {
-        return user;
-    } else {
-        return new Error("No user found");
-    }
+    if (!user) return new Error("No user found");
+    return user;
 }

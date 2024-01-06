@@ -1,18 +1,14 @@
-import API from "@/lib/API";
 import { useEffect, useState } from "react";
+import API from "../lib/API";
 
 const UserProfile = () => {
     const userId = "65980087e960c66b8d8b2ef0";
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState<any | null>(null);
     useEffect(() => {
-        API.get(`/user/profile?id=${userId}`)
-            .then((response) => {
-                console.log(response);
-                setUserData(response.user);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        API.getProfile(userId).then((data) => {
+            console.log(data);
+            setUserData(data);
+        });
     }, []);
 
     return (
