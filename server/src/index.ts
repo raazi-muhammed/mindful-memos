@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -23,7 +23,15 @@ app.use(
     })
 );
 
-app.use("/api/v1", createExpressMiddleware({ router: appRouter }));
+app.use(
+    "/api/v1",
+    createExpressMiddleware({
+        router: appRouter,
+        createContext: ({ req, res }) => {
+            return { authorization: req.headers.authorization };
+        },
+    })
+);
 
 app.listen(4000, () => {
     console.log(`Server Started\t: http://localhost:4000`);

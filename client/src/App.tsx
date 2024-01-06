@@ -14,6 +14,8 @@ import { useState } from "react";
 import { trpc } from "./lib/trpc";
 /* TRPC */
 
+import Cookies from "js-cookie";
+
 function App() {
     const [queryClient] = useState(() => new QueryClient());
     const [trpcClient] = useState(() =>
@@ -21,6 +23,7 @@ function App() {
             links: [
                 httpBatchLink({
                     url: "http://localhost:4000/api/v1",
+                    headers: { Authorization: Cookies.get("__crud_app") },
                 }),
             ],
         })

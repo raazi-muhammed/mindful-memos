@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/lib/trpc";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
     email: z.string().email().min(2, {
@@ -23,16 +25,23 @@ const formSchema = z.object({
 
 export default function LoginForm() {
     const { toast } = useToast();
-    const userCreator = trpc.user.login.useMutation();
-
+    const navigate = useNavigate();
+    const userLogin = trpc.user.login.useMutation();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        userCreator
+        userLogin
             .mutateAsync(values)
             .then((res) => {
+                if (res) {
+                    Cookies.set("__crud_app", res);
+                    navigate("/");
+                    window.location.reload();
+                } else {
+                    console.log("no res");
+                }
                 toast({ description: "Logged In" });
             })
             .catch((error) => {

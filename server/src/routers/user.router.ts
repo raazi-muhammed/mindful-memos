@@ -6,8 +6,8 @@ import {
 } from "../controllers/user.controllers";
 import { trpc } from "../lib/trpc";
 import { z } from "zod";
+import { isUserMiddleware } from "../middlewares/middlewares";
 
-const userProfileProcedure = trpc.procedure.input(z.string());
 const userLoginProcedure = trpc.procedure.input(
     z.object({
         email: z.string(),
@@ -36,10 +36,10 @@ export const userRouter = trpc.router({
     signUp: userSignUpProcedure.mutation(async (opts) => {
         return await signUpUser(opts.input);
     }),
-    profile: userProfileProcedure.query(async (opts) => {
-        return await userProfile(opts.input);
+    profile: trpc.procedure.use(isUserMiddleware).query(async (opts) => {
+        return await userProfile(opts.ctx?.user?._id);
     }),
-    edit: userEditProcedure.mutation(async (opts) => {
+    edit: userEditProcedure.use(isUserMiddleware).mutation(async (opts) => {
         return await editProfile(opts.input);
     }),
 });

@@ -3,6 +3,7 @@ import { logUser, makeUser } from "../entities/user.entity";
 import { UserObjectType } from "../models/user.model";
 import { ErrorTypes, throwError } from "../utils/CustomErrorHandler";
 import { getHashedPassword, comparePassword } from "../utils/encryption";
+import { signToken } from "../utils/token";
 
 export async function loginUserInteractor(
     database: DataBaseType,
@@ -11,7 +12,7 @@ export async function loginUserInteractor(
     const user = await database.getUserByEmail(email);
     if (!user) return throwError(ErrorTypes.BAD_REQUEST, "No User found");
 
-    return logUser(comparePassword, password, user);
+    return logUser(signToken, comparePassword, password, user);
 }
 
 export async function createUserInteractor(

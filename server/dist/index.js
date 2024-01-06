@@ -20,7 +20,12 @@ app.use((0, cors_1.default)({
     origin: "http://localhost:8080",
     credentials: true,
 }));
-app.use("/api/v1", (0, express_2.createExpressMiddleware)({ router: index_1.appRouter }));
+app.use("/api/v1", (0, express_2.createExpressMiddleware)({
+    router: index_1.appRouter,
+    createContext: ({ req, res }) => {
+        return { authorization: req.headers.authorization };
+    },
+}));
 app.listen(4000, () => {
     console.log(`Server Started\t: http://localhost:4000`);
 });

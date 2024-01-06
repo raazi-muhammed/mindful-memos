@@ -9,9 +9,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "../ui/use-toast";
+import Cookies from "js-cookie";
 
 export function UserProfileDropDown() {
+    const { toast } = useToast();
     const navigate = useNavigate();
+    const handleLogOut = () => {
+        Cookies.remove("__crud_app");
+        navigate("/login");
+        window.location.reload();
+        toast({ description: "Logged Out" });
+    };
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -25,7 +34,9 @@ export function UserProfileDropDown() {
                         Profile
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuItem>Log out</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogOut}>
+                    Log out
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );

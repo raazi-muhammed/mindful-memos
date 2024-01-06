@@ -4,8 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { UserType } from "@/types/types";
 
 const UserProfile = () => {
-    const userId = "65980087e960c66b8d8b2ef0";
-    const response = trpc.user.profile.useQuery(userId);
+    const response = trpc.user.profile.useQuery();
     const userData = response?.data as UserType;
 
     return (
@@ -28,8 +27,10 @@ const UserProfile = () => {
 
                     <EditProfile userDetails={userData} />
                 </section>
-            ) : (
+            ) : response.isLoading ? (
                 <p>Loading...</p>
+            ) : (
+                <p>An Error Occurred</p>
             )}
         </div>
     );
