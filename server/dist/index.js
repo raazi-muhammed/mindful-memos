@@ -11,7 +11,9 @@ const express_2 = require("@trpc/server/adapters/express");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.use(express_1.default.json());
+app.use(express_1.default.json({
+    limit: "50mb",
+}));
 require("./database/connectDb");
 const index_1 = require("./routers/index");
 app.use((0, cors_1.default)({

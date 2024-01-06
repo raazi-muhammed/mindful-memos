@@ -1,5 +1,6 @@
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import { AppRouter } from "../../../server/src/index";
+
 type Options = {
     toaster?: ({
         title,
@@ -16,6 +17,7 @@ const client = createTRPCProxyClient<AppRouter>({
 
 export async function getProfile(id: string) {
     const result = await client.user.profile.query(id);
+    if (!result.success) throw new Error(result.message);
     return result;
 }
 
@@ -41,7 +43,7 @@ export async function userLogin(
         email: string;
         password: string;
     },
-    options: Options
+    options?: Options
 ) {
     const result = await client.user.login.mutate(userDetails);
     if (options?.toaster && result?.message) {
@@ -59,9 +61,27 @@ export async function userSignUp(
         username: string;
         password: string;
     },
-    options: Options
+    options?: Options
 ) {
     const result = await client.user.signUp.mutate(userDetails);
+    if (options?.toaster && result?.message) {
+        options.toaster({
+            description: result?.message || "Invalid Details",
+        });
+    }
+    if (!result.success) throw new Error(result.message);
+    return result;
+}
+
+export async function editUser(
+    userDetails: {
+        email: string;
+        username: string;
+        avatar?: string;
+    },
+    options?: Options
+) {
+    const result = await client.user.edit.mutate(userDetails);
     if (options?.toaster && result?.message) {
         options.toaster({
             description: result?.message || "Invalid Details",
@@ -76,4 +96,5 @@ export default {
     userLogin,
     userSignUp,
     adminLogin,
+    editUser,
 };

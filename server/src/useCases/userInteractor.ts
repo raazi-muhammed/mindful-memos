@@ -42,3 +42,22 @@ export async function userProfileInteractor(
     if (!user) return new Error("No user found");
     return user;
 }
+
+export async function editUserInteractor(
+    database: DataBaseType,
+    { email, username, avatar }: Omit<UserObjectType, "password">
+) {
+    const user = await database.getUserByEmail(email);
+    if (!user) return new Error("No user found");
+
+    if (avatar) {
+        console.log("editing");
+
+        await database.editUser(user, { username, avatar });
+        console.log("editied");
+    } else {
+        await database.editUser(user, { username });
+    }
+
+    return user;
+}

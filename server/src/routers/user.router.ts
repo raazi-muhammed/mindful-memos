@@ -2,6 +2,7 @@ import {
     loginUser,
     signUpUser,
     userProfile,
+    editProfile,
 } from "../controllers/user.controllers";
 import { trpc } from "../lib/trpc";
 import { z } from "zod";
@@ -20,6 +21,13 @@ const userSignUpProcedure = trpc.procedure.input(
         password: z.string(),
     })
 );
+const userEditProcedure = trpc.procedure.input(
+    z.object({
+        email: z.string(),
+        username: z.string(),
+        avatar: z.string().optional(),
+    })
+);
 
 export const userRouter = trpc.router({
     login: userLoginProcedure.mutation(async (opts) => {
@@ -30,6 +38,9 @@ export const userRouter = trpc.router({
     }),
     profile: userProfileProcedure.query(async (opts) => {
         return await userProfile(opts.input);
+    }),
+    edit: userEditProcedure.mutation(async (opts) => {
+        return await editProfile(opts.input);
     }),
 });
 

@@ -4,6 +4,7 @@ export interface UserObjectType {
     email: string;
     password: string;
     username: string;
+    avatar?: string;
 }
 
 export interface UserType extends Document, UserObjectType {
@@ -20,6 +21,9 @@ const userSchema = new mongoose.Schema(
         username: {
             type: String,
             required: true,
+        },
+        avatar: {
+            type: String,
         },
         password: {
             type: String,
