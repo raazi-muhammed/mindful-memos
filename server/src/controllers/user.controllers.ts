@@ -4,9 +4,8 @@ import {
     loginUserInteractor,
     userProfileInteractor,
     editUserInteractor,
+    loadUserInteractor,
 } from "../useCases/user.interactor";
-import { UserType } from "../models/user.model";
-import { TRPCError } from "@trpc/server";
 import { ErrorTypes, throwError } from "../utils/CustomErrorHandler";
 
 export async function signUpUser(signUpDetails: {
@@ -29,7 +28,6 @@ export async function editProfile(userDetails: {
     avatar?: string;
     email: string;
 }) {
-    //console.log(userDetails);
     return await editUserInteractor(database, userDetails);
 }
 
@@ -37,6 +35,12 @@ export async function userProfile(userId: string) {
     if (!userId) {
         return throwError(ErrorTypes.BAD_REQUEST, "Invalid Input");
     }
-
     return await userProfileInteractor(database, userId);
+}
+
+export async function loadUser(userId: string) {
+    if (!userId) {
+        return throwError(ErrorTypes.BAD_REQUEST, "Invalid Input");
+    }
+    return await loadUserInteractor(database, userId);
 }

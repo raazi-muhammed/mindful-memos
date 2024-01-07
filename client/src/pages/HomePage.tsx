@@ -1,15 +1,17 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { UserProfileDropDown } from "@/components/custom/UserProfileDropDown";
+import { useSelector } from "react-redux";
+
+import NavBar from "@/components/layout/NavBar";
+import CreateNewNote from "@/components/custom/CreateNewNote";
 
 const HomePage = () => {
+    const user = useSelector((state: any) => state.user.user);
+
     return (
         <div>
+            <NavBar />
             <p>Home Page</p>
-            <Link to="login">
-                <Button>login</Button>
-            </Link>
-            <UserProfileDropDown />
+            <CreateNewNote />
+            <p>{JSON.stringify(user)}</p>
         </div>
     );
 };

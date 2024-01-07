@@ -14,6 +14,8 @@ import { useState } from "react";
 import { trpc } from "./lib/trpc";
 /* TRPC */
 
+import { store } from "./app/store";
+import { Provider } from "react-redux";
 import Cookies from "js-cookie";
 
 function App() {
@@ -30,29 +32,37 @@ function App() {
     );
 
     return (
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-            <QueryClientProvider client={queryClient}>
-                <div className="grid place-items-center h-screen">
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/profile" element={<UserProfile />} />
-                            <Route path="/sign-up" element={<SignUpPage />} />
-                            <Route
-                                path="/admin/login"
-                                element={<AdminLoginPage />}
-                            />
-                            <Route
-                                path="/admin/dashboard"
-                                element={<AdminHomePage />}
-                            />
-                        </Routes>
-                    </BrowserRouter>
-                    <Toaster />
-                </div>
-            </QueryClientProvider>
-        </trpc.Provider>
+        <Provider store={store}>
+            <trpc.Provider client={trpcClient} queryClient={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <div className="grid place-items-center h-screen">
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path="/" element={<HomePage />} />
+                                <Route path="/login" element={<LoginPage />} />
+                                <Route
+                                    path="/profile"
+                                    element={<UserProfile />}
+                                />
+                                <Route
+                                    path="/sign-up"
+                                    element={<SignUpPage />}
+                                />
+                                <Route
+                                    path="/admin/login"
+                                    element={<AdminLoginPage />}
+                                />
+                                <Route
+                                    path="/admin/dashboard"
+                                    element={<AdminHomePage />}
+                                />
+                            </Routes>
+                        </BrowserRouter>
+                        <Toaster />
+                    </div>
+                </QueryClientProvider>
+            </trpc.Provider>
+        </Provider>
     );
 }
 

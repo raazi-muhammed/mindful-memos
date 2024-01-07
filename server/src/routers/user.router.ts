@@ -3,6 +3,7 @@ import {
     signUpUser,
     userProfile,
     editProfile,
+    loadUser,
 } from "../controllers/user.controllers";
 import { trpc } from "../lib/trpc";
 import { z } from "zod";
@@ -41,5 +42,8 @@ export const userRouter = trpc.router({
     }),
     edit: userEditProcedure.use(isUserMiddleware).mutation(async (opts) => {
         return await editProfile(opts.input);
+    }),
+    loadUser: trpc.procedure.use(isUserMiddleware).query(async (opts) => {
+        return await loadUser(opts.ctx?.user?._id);
     }),
 });

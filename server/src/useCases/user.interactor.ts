@@ -63,3 +63,10 @@ export async function editUserInteractor(
 
     return user;
 }
+
+export async function loadUserInteractor(database: DataBaseType, id: string) {
+    const user = await database.getUserById(id);
+    if (!user) return throwError(ErrorTypes.BAD_REQUEST, "No user found");
+
+    return user;
+}
