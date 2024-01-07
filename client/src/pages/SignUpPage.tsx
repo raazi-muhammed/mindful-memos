@@ -1,4 +1,4 @@
-import SignUpForm from "@/components/custom/SignUpForm";
+import SignUpForm from "@/components/user/SignUpForm";
 import Container from "@/components/layout/Container";
 import {
     Card,

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { UserProfileDropDown } from "../custom/UserProfileDropDown";
+import { UserProfileDropDown } from "../user/UserProfileDropDown";
 import { setUser } from "@/app/userSlice";
 import { trpc } from "@/lib/trpc";
 import { UserType } from "@/types/types";

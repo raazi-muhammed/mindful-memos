@@ -1,4 +1,4 @@
-import LoginForm from "@/components/custom/LoginForm";
+import LoginForm from "@/components/user/LoginForm";
 import Container from "@/components/layout/Container";
 import {
     Card,

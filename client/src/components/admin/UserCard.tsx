@@ -12,7 +12,7 @@ type Props = { user: UserType };
 
 const UserCard = ({ user }: Props) => {
     return (
-        <Card className="w-[350px]">
+        <Card className="min-w-56">
             <CardHeader>
                 <Avatar className="mx-auto">
                     <AvatarImage src={user.avatar || ""} />

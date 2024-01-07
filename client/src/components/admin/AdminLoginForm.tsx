@@ -12,37 +12,34 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
-import { trpc } from "@/lib/trpc";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { trpc } from "@/lib/trpc";
 
 const formSchema = z.object({
-    email: z.string().email().min(2, {
+    username: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    password: z.string().min(6),
+    password: z.string().min(5),
 });
 
-export default function LoginForm() {
-    const { toast } = useToast();
+export default function AdminLoginForm() {
     const navigate = useNavigate();
-    const userLogin = trpc.user.login.useMutation();
+    const { toast } = useToast();
+    const adminLogin = trpc.admin.login.useMutation();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            username: "",
+            password: "",
+        },
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        userLogin
+        adminLogin
             .mutateAsync(values)
-            .then((res) => {
-                if (res) {
-                    Cookies.set("__crud_app", res);
-                    navigate("/");
-                    window.location.reload();
-                } else {
-                    console.log("no res");
-                }
+            .then(() => {
                 toast({ description: "Logged In" });
+                navigate("/admin/dashboard");
             })
             .catch((error) => {
                 toast({ description: error?.message });
@@ -58,12 +55,12 @@ export default function LoginForm() {
             >
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>Username</FormLabel>
                             <FormControl>
-                                <Input type="email" {...field} />
+                                <Input {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

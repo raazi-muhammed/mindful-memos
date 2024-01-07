@@ -1,4 +1,4 @@
-import { EditProfile } from "@/components/custom/EditProfile";
+import { EditProfile } from "@/components/user/EditProfile";
 import Container from "@/components/layout/Container";
 import UserSideBar, { SideBarItem } from "@/components/layout/UserSideBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

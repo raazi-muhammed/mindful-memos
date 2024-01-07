@@ -1,4 +1,4 @@
-import AdminLoginForm from "@/components/custom/AdminLoginForm";
+import AdminLoginForm from "@/components/admin/AdminLoginForm";
 import Container from "@/components/layout/Container";
 import {
     Card,

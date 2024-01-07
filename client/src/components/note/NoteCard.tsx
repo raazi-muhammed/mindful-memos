@@ -34,7 +34,6 @@ import {
 import { Button } from "../ui/button";
 import { trpc } from "@/lib/trpc";
 import { useToast } from "../ui/use-toast";
-import NewNoteForm from "./NewNoteForm";
 import EditNoteForm from "./EditNoteForm";
 
 type Props = { note: NoteType };
@@ -46,7 +45,7 @@ const NoteCard = ({ note }: Props) => {
     const handleNoteDelete = () => {
         deleteNote
             .mutateAsync(note._id)
-            .then((res) => {
+            .then(() => {
                 toast({ description: "Note deleted" });
             })
             .catch((error) => {

@@ -1,15 +1,13 @@
 import NavBar from "@/components/layout/NavBar";
-import CreateNewNote from "@/components/custom/CreateNewNote";
+import CreateNewNote from "@/components/note/CreateNewNote";
 import { trpc } from "@/lib/trpc";
-import NoteCard from "@/components/custom/NoteCard";
+import NoteCard from "@/components/note/NoteCard";
 import { NoteType } from "@/types/types";
 import Container from "@/components/layout/Container";
 
 const HomePage = () => {
     const notesResponse = trpc.user.getNotes.useQuery();
-
     const notes = notesResponse.data as NoteType[];
-    console.log(notesResponse);
 
     return (
         <div className="w-screen">
@@ -22,7 +20,7 @@ const HomePage = () => {
                 {notes && notes.length > 0 ? (
                     <section className="grid grid-cols-3 gap-4">
                         {notes.map((note) => (
-                            <NoteCard note={note} />
+                            <NoteCard key={note._id} note={note} />
                         ))}
                     </section>
                 ) : (
