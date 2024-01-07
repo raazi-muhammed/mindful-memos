@@ -19,6 +19,17 @@ export async function addNoteInteractor(
     database.addNote(note);
 }
 
+export async function editNoteInteractor(
+    database: DataBaseType,
+    {
+        noteId,
+        title,
+        content,
+    }: { noteId: string; title: string; content: string }
+) {
+    database.editNote({ noteId, title, content });
+}
+
 export async function getNotesInteractor(
     database: DataBaseType,
     userId: string
@@ -28,4 +39,12 @@ export async function getNotesInteractor(
 
     const notes = await database.getNotesFromUser(user);
     return notes;
+}
+
+export async function deleteNoteInteractor(
+    database: DataBaseType,
+    noteId: string
+) {
+    const note = await database.deleteNoteById(noteId);
+    return note;
 }

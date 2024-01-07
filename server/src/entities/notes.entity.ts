@@ -19,6 +19,7 @@ export function makeNote({
         title,
         content,
         user,
+        isDeleted: false,
     };
 
     return note;

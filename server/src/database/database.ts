@@ -1,19 +1,6 @@
 import User, { UserObjectType, UserType } from "../models/user.model";
 import Note, { NoteType, NotesObjectType } from "../models/note.model";
 
-export type DataBaseType = {
-    insertUser: (data: UserObjectType) => Promise<UserType | undefined>;
-    getUserByEmail: (email: string) => Promise<UserType | undefined>;
-    getUserById: (id: string) => Promise<UserType | undefined>;
-    getUsers: () => Promise<UserType[]>;
-    addNote: ({ title, content, user }: NotesObjectType) => Promise<NoteType>;
-    getNotesFromUser: (user: UserType) => Promise<NoteType[]>;
-    editUser: (
-        user: UserType,
-        { username, avatar }: { username: string; avatar?: string }
-    ) => Promise<void>;
-};
-
 async function insertUser(data: UserObjectType) {
     const user = await User.create(data);
     return user as UserType | undefined;
@@ -61,10 +48,39 @@ async function addNote({ title, content, user }: NotesObjectType) {
 }
 
 async function getNotesFromUser(user: UserType) {
-    const note = await Note.find({ user: user._id });
+    const note = await Note.find({ user: user._id, isDeleted: false });
     return note as NoteType[];
 }
+async function editNote({
+    noteId,
+    title,
+    content,
+}: {
+    noteId: string;
+    title: string;
+    content: string;
+}) {
+    await Note.updateOne({ _id: noteId }, { title, content });
+}
+async function deleteNoteById(noteId: string) {
+    await Note.updateOne(
+        { _id: noteId },
+        { isDeleted: true },
+        { upsert: true }
+    );
+}
 
+export type DataBaseType = {
+    insertUser: typeof insertUser;
+    getUserByEmail: typeof getUserByEmail;
+    getUserById: typeof getUserById;
+    getUsers: typeof getUsers;
+    addNote: typeof addNote;
+    editNote: typeof editNote;
+    deleteNoteById: typeof deleteNoteById;
+    getNotesFromUser: typeof getNotesFromUser;
+    editUser: typeof editUser;
+};
 const database: DataBaseType = {
     insertUser,
     getUserByEmail,
@@ -73,5 +89,7 @@ const database: DataBaseType = {
     getUsers,
     addNote,
     getNotesFromUser,
+    deleteNoteById,
+    editNote,
 };
 export default database;

@@ -5,7 +5,12 @@ import {
     editProfile,
     loadUser,
 } from "../controllers/user.controllers";
-import { addNote, getNotesFromUser } from "../controllers/note.controller";
+import {
+    addNote,
+    getNotesFromUser,
+    deleteNote,
+    editNote,
+} from "../controllers/note.controller";
 import { trpc } from "../lib/trpc";
 import { z } from "zod";
 import { isUserMiddleware } from "../middlewares/middlewares";
@@ -36,6 +41,14 @@ const addNoteProcedure = trpc.procedure.input(
         content: z.string(),
     })
 );
+const editNoteProcedure = trpc.procedure.input(
+    z.object({
+        noteId: z.string(),
+        title: z.string(),
+        content: z.string(),
+    })
+);
+const deleteNoteProcedure = trpc.procedure.input(z.string());
 
 export const userRouter = trpc.router({
     login: userLoginProcedure.mutation(async (opts) => {
@@ -60,6 +73,19 @@ export const userRouter = trpc.router({
             userId: opts.ctx?.user?._id,
         });
     }),
+    editNote: editNoteProcedure.use(isUserMiddleware).mutation(async (opts) => {
+        return await editNote({
+            noteId: opts.input.noteId,
+            title: opts.input.title,
+            content: opts.input.content,
+            userId: opts.ctx?.user?._id,
+        });
+    }),
+    deleteNote: deleteNoteProcedure
+        .use(isUserMiddleware)
+        .mutation(async (opts) => {
+            return await deleteNote(opts.input);
+        }),
     getNotes: trpc.procedure.use(isUserMiddleware).query(async (opts) => {
         return await getNotesFromUser(opts.ctx?.user?._id);
     }),

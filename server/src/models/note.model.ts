@@ -5,6 +5,7 @@ export interface NotesObjectType {
     title: string;
     content: string;
     user: UserType;
+    isDeleted: boolean;
 }
 
 export interface NoteType extends Document, NotesObjectType {
@@ -24,6 +25,10 @@ const noteSchema = new mongoose.Schema(
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
+        },
+        isDeleted: {
+            type: Boolean,
+            default: false,
         },
     },
     {
