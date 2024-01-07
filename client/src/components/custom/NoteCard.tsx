@@ -5,7 +5,7 @@ type Props = { note: NoteType };
 
 const NoteCard = ({ note }: Props) => {
     return (
-        <Card className="w-[350px]">
+        <Card>
             <CardHeader>
                 <CardTitle>{note.title}</CardTitle>
             </CardHeader>
