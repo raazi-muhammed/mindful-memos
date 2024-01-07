@@ -5,6 +5,7 @@ import {
     editProfile,
     loadUser,
 } from "../controllers/user.controllers";
+import { addNote, getNotesFromUser } from "../controllers/note.controller";
 import { trpc } from "../lib/trpc";
 import { z } from "zod";
 import { isUserMiddleware } from "../middlewares/middlewares";
@@ -29,6 +30,12 @@ const userEditProcedure = trpc.procedure.input(
         avatar: z.string().optional(),
     })
 );
+const addNoteProcedure = trpc.procedure.input(
+    z.object({
+        title: z.string(),
+        content: z.string(),
+    })
+);
 
 export const userRouter = trpc.router({
     login: userLoginProcedure.mutation(async (opts) => {
@@ -45,5 +52,15 @@ export const userRouter = trpc.router({
     }),
     loadUser: trpc.procedure.use(isUserMiddleware).query(async (opts) => {
         return await loadUser(opts.ctx?.user?._id);
+    }),
+    addNote: addNoteProcedure.use(isUserMiddleware).mutation(async (opts) => {
+        return await addNote({
+            title: opts.input.title,
+            content: opts.input.content,
+            userId: opts.ctx?.user?._id,
+        });
+    }),
+    getNotes: trpc.procedure.use(isUserMiddleware).query(async (opts) => {
+        return await getNotesFromUser(opts.ctx?.user?._id);
     }),
 });

@@ -1,10 +1,13 @@
 import User, { UserObjectType, UserType } from "../models/user.model";
+import Note, { NoteType, NotesObjectType } from "../models/note.model";
 
 export type DataBaseType = {
     insertUser: (data: UserObjectType) => Promise<UserType | undefined>;
     getUserByEmail: (email: string) => Promise<UserType | undefined>;
     getUserById: (id: string) => Promise<UserType | undefined>;
     getUsers: () => Promise<UserType[]>;
+    addNote: ({ title, content, user }: NotesObjectType) => Promise<NoteType>;
+    getNotesFromUser: (user: UserType) => Promise<NoteType[]>;
     editUser: (
         user: UserType,
         { username, avatar }: { username: string; avatar?: string }
@@ -52,11 +55,23 @@ async function editUser(
     return;
 }
 
+async function addNote({ title, content, user }: NotesObjectType) {
+    const note = await Note.create({ title, content, user });
+    return note as NoteType;
+}
+
+async function getNotesFromUser(user: UserType) {
+    const note = await Note.find({ user: user._id });
+    return note as NoteType[];
+}
+
 const database: DataBaseType = {
     insertUser,
     getUserByEmail,
     getUserById,
     editUser,
     getUsers,
+    addNote,
+    getNotesFromUser,
 };
 export default database;

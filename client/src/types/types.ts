@@ -5,3 +5,10 @@ export interface UserType {
     username: string;
     avatar?: string;
 }
+
+export interface NoteType {
+    _id: string;
+    title: string;
+    content: string;
+    user: UserType;
+}
