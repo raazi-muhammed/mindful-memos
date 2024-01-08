@@ -49,7 +49,7 @@ const NoteCardDropDown = ({ note }: Props) => {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="secondary">
+                    <Button size="icon" variant="ghost">
                         <BsThreeDots size="1.2em" />
                     </Button>
                 </DropdownMenuTrigger>

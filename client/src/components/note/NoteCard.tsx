@@ -26,7 +26,7 @@ const NoteCard = ({ note }: Props) => {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <p>{note.content}</p>
+                        <p className="-mt-6">{note.content}</p>
                     </CardContent>
                     <CardFooter>
                         <p className="text-xs text-muted-foreground">

@@ -1,6 +1,8 @@
 import { DataBaseType } from "../database/database";
 import { verifyAdmin } from "../entities/admin.entity";
+import { validateAndSendEmails } from "../entities/notes.entity";
 import { ErrorTypes, throwError } from "../utils/CustomErrorHandler";
+import { EmailServiceType } from "../utils/emailService";
 import { comparePassword } from "../utils/encryption";
 
 export async function loginAdminInteractor({
@@ -33,7 +35,7 @@ export async function getMailListInteractor(database: DataBaseType) {
         const note = await database.getRandomNoteFromUser(u);
         return {
             date: today,
-            email: u.email,
+            user: u,
             note,
         };
     });
@@ -46,15 +48,20 @@ export async function getMailListInteractor(database: DataBaseType) {
 
 export async function sendNoteToMailingListInteractor(
     database: DataBaseType,
-    sendEmail: ({ to, content }: { to: string; content: string }) => null
+    emailService: EmailServiceType
 ) {
     const userListing = await getMailListInteractor(database);
-    userListing.map((list) => {
-        sendEmail({
-            to: list.email,
-            content: list.note?.title || "Please add a note",
-        });
+    const sendMailPromises = userListing.map(async (list) => {
+        if (list.note) {
+            return await validateAndSendEmails({
+                emailService,
+                user: list.user,
+                note: list.note,
+            });
+        }
     });
+
+    return Promise.all(sendMailPromises);
 }
 
 export async function setUserBlockStateInteractor(

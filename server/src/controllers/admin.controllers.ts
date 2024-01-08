@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import database from "../database/database";
-import { sendEmail } from "../utils/sendMail";
+import emailService from "../utils/emailService";
 import {
     loginAdminInteractor,
     getUsersInteractor,
@@ -38,5 +38,5 @@ export async function getMailList() {
     return await getMailListInteractor(database);
 }
 export async function sendNoteToMailingList() {
-    const data = await sendNoteToMailingListInteractor(database, sendEmail);
+    return await sendNoteToMailingListInteractor(database, emailService);
 }

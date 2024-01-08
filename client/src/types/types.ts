@@ -17,6 +17,6 @@ export interface NoteType {
 
 export type MailListingType = {
     date: string;
-    email: string;
+    user: UserType;
     note: NoteType;
 };

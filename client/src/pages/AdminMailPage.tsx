@@ -32,7 +32,7 @@ const AdminMailPage = () => {
                 {mailList ? (
                     <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                         {mailList.map((list) => (
-                            <MailListCard mailList={list} />
+                            <MailListCard key={list.note._id} mailList={list} />
                         ))}
                     </section>
                 ) : null}
