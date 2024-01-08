@@ -5,6 +5,7 @@ import AdminSideBar, {
 import Container from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/utils/Heading";
+import Spinner from "@/components/utils/Spinner";
 import { trpc } from "@/lib/trpc";
 import { MailListingType } from "@/types/types";
 
@@ -27,6 +28,7 @@ const AdminMailPage = () => {
                         Send Test Mail
                     </Button>
                 </section>
+                <Spinner className="py-36" loading={response.isLoading} />
                 {mailList ? (
                     <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                         {mailList.map((list) => (

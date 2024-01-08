@@ -19,6 +19,7 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import Cookies from "js-cookie";
 import AdminMailPage from "./pages/AdminMailPage";
+import UserSettingsPage from "./pages/UserSettingsPage";
 
 function App() {
     const [queryClient] = useState(() => new QueryClient());
@@ -49,6 +50,10 @@ function App() {
                                     <Route
                                         path="/profile"
                                         element={<UserProfile />}
+                                    />
+                                    <Route
+                                        path="/settings"
+                                        element={<UserSettingsPage />}
                                     />
                                     <Route
                                         path="/sign-up"

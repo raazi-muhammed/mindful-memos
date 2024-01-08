@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "../ui/use-toast";
 import Cookies from "js-cookie";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserType } from "@/types/types";
+import { IoIosPerson } from "react-icons/io";
 
-export function UserProfileDropDown() {
+export function UserProfileDropDown({ userData }: { userData: UserType }) {
     const { toast } = useToast();
     const navigate = useNavigate();
     const handleLogOut = () => {
@@ -24,7 +27,15 @@ export function UserProfileDropDown() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline">Profile</Button>
+                <Button variant="secondary">
+                    <p className="me-3">{userData.username}</p>
+                    <Avatar className="mx-auto w-8 h-8">
+                        <AvatarImage src={userData.avatar || ""} />
+                        <AvatarFallback className="bg-muted-foreground">
+                            <IoIosPerson size="1.3em" />
+                        </AvatarFallback>
+                    </Avatar>
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>

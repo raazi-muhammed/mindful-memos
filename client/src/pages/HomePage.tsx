@@ -5,6 +5,7 @@ import NoteCard from "@/components/note/NoteCard";
 import { NoteType } from "@/types/types";
 import Container from "@/components/layout/Container";
 import Heading from "@/components/utils/Heading";
+import Spinner from "@/components/utils/Spinner";
 
 const HomePage = () => {
     const notesResponse = trpc.user.getNotes.useQuery();
@@ -18,15 +19,20 @@ const HomePage = () => {
                     <Heading>Notes</Heading>
                     <CreateNewNote />
                 </section>
-                {notes && notes.length > 0 ? (
-                    <section className="grid grid-cols-3 gap-4">
-                        {notes.map((note) => (
-                            <NoteCard key={note._id} note={note} />
-                        ))}
-                    </section>
-                ) : (
-                    <p className="text-center mt-40">No Notes</p>
-                )}
+                <Spinner className="py-36" loading={notesResponse.isLoading} />
+                {notes ? (
+                    <>
+                        {notes.length > 0 ? (
+                            <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                                {notes.map((note) => (
+                                    <NoteCard key={note._id} note={note} />
+                                ))}
+                            </section>
+                        ) : (
+                            <p className="text-center mt-40">No Notes</p>
+                        )}
+                    </>
+                ) : null}
             </Container>
         </div>
     );

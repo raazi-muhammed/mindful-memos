@@ -4,20 +4,25 @@ import UserSideBar, { SideBarItem } from "@/components/layout/UserSideBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { trpc } from "@/lib/trpc";
 import { UserType } from "@/types/types";
+import { IoIosPerson } from "react-icons/io";
+import Spinner from "@/components/utils/Spinner";
 
 const UserProfile = () => {
     const response = trpc.user.profile.useQuery();
     const userData = response?.data as UserType;
 
     return (
-        <Container className="flex align-middle h-screen">
+        <Container>
             <UserSideBar active={SideBarItem.PROFILE} />
             <section className="w-full my-auto">
+                <Spinner className="py-36" loading={response.isLoading} />
                 {userData ? (
-                    <section className="grid gap-4 w-96 mx-auto">
+                    <section className="grid gap-4 max-w-md mx-auto">
                         <Avatar className="mx-auto">
                             <AvatarImage src={userData.avatar || ""} />
-                            <AvatarFallback>IMG</AvatarFallback>
+                            <AvatarFallback>
+                                <IoIosPerson size="3em" />
+                            </AvatarFallback>
                         </Avatar>
 
                         <div className="bg-accent rounded px-6 py-2">
@@ -31,11 +36,7 @@ const UserProfile = () => {
 
                         <EditProfile userDetails={userData} />
                     </section>
-                ) : response.isLoading ? (
-                    <p className="text-center mx-auto">Loading...</p>
-                ) : (
-                    <p className="text-center mx-auto">An Error Occurred</p>
-                )}
+                ) : null}
             </section>
         </Container>
     );

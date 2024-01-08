@@ -20,6 +20,7 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { trpc } from "@/lib/trpc";
 import { useToast } from "../ui/use-toast";
+import { IoIosPerson } from "react-icons/io";
 
 type Props = { user: UserType };
 
@@ -47,7 +48,9 @@ const UserCard = ({ user }: Props) => {
             <CardHeader>
                 <Avatar className="mx-auto">
                     <AvatarImage src={user.avatar || ""} />
-                    <AvatarFallback>IMG</AvatarFallback>
+                    <AvatarFallback>
+                        <IoIosPerson size="2em" />
+                    </AvatarFallback>
                 </Avatar>
             </CardHeader>
             <div className="w-full flex flex-wrap p-4">

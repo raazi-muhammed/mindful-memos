@@ -16,6 +16,7 @@ import { useToast } from "../ui/use-toast";
 import { convertToBase64 } from "@/utils/converter";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { trpc } from "@/lib/trpc";
+import { IoIosPerson } from "react-icons/io";
 
 export function EditProfile({ userDetails }: { userDetails: UserType }) {
     const { toast } = useToast();
@@ -65,7 +66,9 @@ export function EditProfile({ userDetails }: { userDetails: UserType }) {
                 </DialogHeader>
                 <Avatar className="mx-auto w-36 h-36">
                     <AvatarImage src={imageBase64} />
-                    <AvatarFallback>IMG</AvatarFallback>
+                    <AvatarFallback>
+                        <IoIosPerson size="5em" />
+                    </AvatarFallback>
                 </Avatar>
 
                 <form onSubmit={onSubmit} className="grid gap-4 py-4">

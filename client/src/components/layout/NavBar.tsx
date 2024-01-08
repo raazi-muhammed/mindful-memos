@@ -25,7 +25,7 @@ const NavBar = () => {
                     MindfulMemos
                 </p>
                 {userData ? (
-                    <UserProfileDropDown />
+                    <UserProfileDropDown userData={userData} />
                 ) : (
                     <Link to="/login">
                         <Button>Login</Button>
