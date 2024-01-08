@@ -27,7 +27,7 @@ export function UserProfileDropDown({ userData }: { userData: UserType }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="secondary">
+                <Button variant="ghost">
                     <p className="me-3">{userData.username}</p>
                     <Avatar className="mx-auto w-8 h-8">
                         <AvatarImage src={userData.avatar || ""} />

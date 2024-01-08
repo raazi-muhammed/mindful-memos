@@ -18,11 +18,11 @@ const UserSettingsPage = () => {
         <Container>
             <UserSideBar active={SideBarItem.SETTINGS} />
             <section className="max-w-md mx-auto">
-                <section className="flex justify-between bg-muted rounded p-4">
+                <section className="flex justify-between bg-card rounded p-4">
                     <p className="my-auto">Choose theme</p>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon">
+                            <Button variant="secondary" size="icon">
                                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                                 <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                                 <span className="sr-only">Toggle theme</span>

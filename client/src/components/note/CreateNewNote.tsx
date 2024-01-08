@@ -13,7 +13,7 @@ const CreateNewNote = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">New Note</Button>
+                <Button variant="secondary">New Note</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

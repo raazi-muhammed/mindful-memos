@@ -29,12 +29,16 @@ const UserProfile = () => {
                             </AvatarFallback>
                         </Avatar>
 
-                        <div className="bg-accent rounded px-6 py-2">
-                            <p className="text-sm">Name</p>
+                        <div className="bg-card rounded px-6 py-2">
+                            <p className="text-sm text-muted-foreground">
+                                Name
+                            </p>
                             <p> {userData.username}</p>
                         </div>
-                        <div className="bg-accent rounded px-6 py-2">
-                            <p className="text-sm">Email</p>
+                        <div className="bg-card rounded px-6 py-2">
+                            <p className="text-sm text-muted-foreground">
+                                Email
+                            </p>
                             <p> {userData.email}</p>
                         </div>
 

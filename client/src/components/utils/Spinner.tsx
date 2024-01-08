@@ -27,7 +27,7 @@ const Spinner = ({
                 }
             >
                 <ClipLoader
-                    color="white"
+                    color="#060E0E"
                     className="my-auto"
                     loading={loading}
                     size={15}

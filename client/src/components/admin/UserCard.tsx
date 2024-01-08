@@ -64,7 +64,7 @@ const UserCard = ({ refreshPage, user }: Props) => {
                     {user.isBlocked ? (
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Button variant="outline">Unblock</Button>
+                                <Button variant="secondary">Unblock</Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
