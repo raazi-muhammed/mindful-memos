@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import { trpc } from "@/lib/trpc";
+import Spinner from "../utils/Spinner";
+import { useState } from "react";
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -34,7 +36,12 @@ export default function AdminLoginForm() {
         },
     });
 
+    const { isDirty, isValid } = form.formState;
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const canSubmitForm = !isDirty || !isValid || isSubmitting;
+
     function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsSubmitting(true);
         adminLogin
             .mutateAsync(values)
             .then(() => {
@@ -42,7 +49,17 @@ export default function AdminLoginForm() {
                 navigate("/admin/dashboard");
             })
             .catch((error) => {
-                toast({ description: error?.message });
+                const errorMessage = error?.message;
+                if (errorMessage.toLowerCase().includes("password")) {
+                    form.setError("password", { message: errorMessage });
+                } else if (errorMessage.toLowerCase().includes("user")) {
+                    form.setError("username", { message: errorMessage });
+                } else {
+                    toast({ description: error?.message });
+                }
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     }
 
@@ -79,8 +96,17 @@ export default function AdminLoginForm() {
                         </FormItem>
                     )}
                 />
-                <Button className="w-full" type="submit">
-                    Log In
+                <Button
+                    disabled={canSubmitForm}
+                    className="w-full"
+                    type="submit"
+                >
+                    <Spinner
+                        className="w-fit mx-2"
+                        size={15}
+                        loading={isSubmitting}
+                    />
+                    <span>Log In</span>
                 </Button>
             </form>
         </Form>

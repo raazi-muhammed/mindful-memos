@@ -1,9 +1,9 @@
 import ClipLoader from "react-spinners/ClipLoader";
 import { cn } from "@/lib/utils";
 
-type Props = { loading: boolean; className?: string };
+type Props = { loading: boolean; className?: string; size?: number };
 
-const Spinner = ({ loading, className }: Props) => {
+const Spinner = ({ loading, className, size = 25 }: Props) => {
     return (
         <div
             className={
@@ -19,7 +19,7 @@ const Spinner = ({ loading, className }: Props) => {
                 color="white"
                 className="my-auto"
                 loading={loading}
-                size={25}
+                size={size}
                 aria-label="Loading Spinner"
                 data-testid="loader"
             />

@@ -14,6 +14,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/lib/trpc";
+import { useState } from "react";
+import Spinner from "../utils/Spinner";
 
 const formSchema = z.object({
     title: z.string().min(5, {
@@ -28,16 +30,29 @@ export default function NewNoteForm() {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            title: "",
+            content: "",
+        },
     });
 
+    const { isDirty, isValid } = form.formState;
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const canSubmitForm = !isDirty || !isValid || isSubmitting;
+
     function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsSubmitting(true);
         addNote
             .mutateAsync(values)
             .then(() => {
                 toast({ description: "Note Added" });
+                form.reset();
             })
             .catch((error) => {
                 toast({ description: error?.message });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     }
 
@@ -75,8 +90,17 @@ export default function NewNoteForm() {
                     )}
                 />
 
-                <Button className="w-full" type="submit">
-                    Add Note
+                <Button
+                    disabled={canSubmitForm}
+                    className="w-full"
+                    type="submit"
+                >
+                    <Spinner
+                        className="w-fit mx-2"
+                        size={15}
+                        loading={isSubmitting}
+                    />
+                    <span>Add Note</span>
                 </Button>
             </form>
         </Form>

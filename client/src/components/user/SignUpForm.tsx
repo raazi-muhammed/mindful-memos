@@ -14,6 +14,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/lib/trpc";
+import { useState } from "react";
+import Spinner from "../utils/Spinner";
 
 const formSchema = z.object({
     email: z.string().email().min(10, {
@@ -38,8 +40,19 @@ export default function SignUpForm() {
             confirmPassword: "",
         },
     });
+    const { isDirty, isValid } = form.formState;
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const canSubmitForm = !isDirty || !isValid || isSubmitting;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+        if (values.password !== values.confirmPassword) {
+            form.setError("confirmPassword", {
+                message: "Confirm password doesn't match",
+            });
+            return;
+        }
+        setIsSubmitting(true);
+
         userSignUp
             .mutateAsync(values)
             .then((res) => {
@@ -47,7 +60,15 @@ export default function SignUpForm() {
                 navigate("/login");
             })
             .catch((error) => {
-                toast({ description: error?.message });
+                const errorMessage = error?.message;
+                if (errorMessage.toLowerCase().includes("user")) {
+                    form.setError("email", { message: errorMessage });
+                } else {
+                    toast({ description: error?.message });
+                }
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
     }
 
@@ -110,8 +131,17 @@ export default function SignUpForm() {
                         </FormItem>
                     )}
                 />
-                <Button className="w-full" type="submit">
-                    Sign Up
+                <Button
+                    disabled={canSubmitForm}
+                    className="w-full"
+                    type="submit"
+                >
+                    <Spinner
+                        className="w-fit mx-2"
+                        size={15}
+                        loading={isSubmitting}
+                    />
+                    <span>Sign Up</span>
                 </Button>
             </form>
         </Form>
