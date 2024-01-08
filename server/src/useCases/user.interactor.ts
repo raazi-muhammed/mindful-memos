@@ -12,16 +12,25 @@ export async function loginUserInteractor(
     const user = await database.getUserByEmail(email);
     if (!user) return throwError(ErrorTypes.BAD_REQUEST, "No User found");
 
+    if (user.isBlocked) {
+        return throwError(ErrorTypes.BAD_REQUEST, "User is Blocked");
+    }
+
     return logUser(signToken, comparePassword, password, user);
 }
 
 export async function createUserInteractor(
     database: DataBaseType,
-    { email, username, password }: UserObjectType
+    {
+        email,
+        username,
+        password,
+    }: { email: string; username: string; password: string }
 ) {
     const alreadyUser = await database.getUserByEmail(email);
-    if (alreadyUser)
+    if (alreadyUser) {
         return throwError(ErrorTypes.BAD_REQUEST, "User already exists");
+    }
 
     const user = await makeUser(getHashedPassword, {
         email,
@@ -50,7 +59,11 @@ export async function userProfileInteractor(
 
 export async function editUserInteractor(
     database: DataBaseType,
-    { email, username, avatar }: Omit<UserObjectType, "password">
+    {
+        email,
+        username,
+        avatar,
+    }: { email: string; username: string; avatar?: string }
 ) {
     const user = await database.getUserByEmail(email);
     if (!user) return throwError(ErrorTypes.BAD_REQUEST, "No user found");

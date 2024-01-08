@@ -4,6 +4,7 @@ export interface UserObjectType {
     email: string;
     password: string;
     username: string;
+    isBlocked: boolean;
     avatar?: string;
 }
 
@@ -28,6 +29,10 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
+        },
+        isBlocked: {
+            type: Boolean,
+            default: false,
         },
     },
     {

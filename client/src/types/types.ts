@@ -3,6 +3,7 @@ export interface UserType {
     email: string;
     password: string;
     username: string;
+    isBlocked: boolean;
     avatar?: string;
 }
 

@@ -24,3 +24,21 @@ export async function loginAdminInteractor({
 export async function getUsersInteractor(database: DataBaseType) {
     return await database.getUsers();
 }
+
+export async function setUserBlockStateInteractor(
+    database: DataBaseType,
+    { userId, blockState }: { userId: string; blockState: boolean }
+) {
+    const user = await database.getUserById(userId);
+    if (!user) {
+        return throwError(ErrorTypes.INTERNAL_SERVER_ERROR, "User not found");
+    }
+    const isBlocked = await database.setUserBlockState(user, blockState);
+    if (!isBlocked) {
+        return throwError(
+            ErrorTypes.INTERNAL_SERVER_ERROR,
+            "An error occurred while blocking"
+        );
+    }
+    return "User Blocked";
+}

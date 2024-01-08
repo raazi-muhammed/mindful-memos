@@ -42,6 +42,15 @@ async function editUser(
     return;
 }
 
+async function setUserBlockState(user: UserType, blockState: boolean) {
+    const updatedInfo = await User.updateOne(
+        { _id: user._id },
+        { isBlocked: blockState },
+        { upsert: true }
+    );
+    return updatedInfo.acknowledged ? true : false;
+}
+
 async function addNote({ title, content, user }: NotesObjectType) {
     const note = await Note.create({ title, content, user });
     return note as NoteType;
@@ -80,6 +89,7 @@ export type DataBaseType = {
     deleteNoteById: typeof deleteNoteById;
     getNotesFromUser: typeof getNotesFromUser;
     editUser: typeof editUser;
+    setUserBlockState: typeof setUserBlockState;
 };
 const database: DataBaseType = {
     insertUser,
@@ -91,5 +101,6 @@ const database: DataBaseType = {
     getNotesFromUser,
     deleteNoteById,
     editNote,
+    setUserBlockState,
 };
 export default database;
