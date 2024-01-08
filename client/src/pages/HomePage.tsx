@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import NoteCard from "@/components/note/NoteCard";
 import { NoteType } from "@/types/types";
 import Container from "@/components/layout/Container";
+import Heading from "@/components/utils/Heading";
 
 const HomePage = () => {
     const notesResponse = trpc.user.getNotes.useQuery();
@@ -14,7 +15,7 @@ const HomePage = () => {
             <NavBar />
             <Container>
                 <section className="flex justify-between my-4">
-                    <p className="text-xl mt-auto font-semibold">Notes</p>
+                    <Heading>Notes</Heading>
                     <CreateNewNote />
                 </section>
                 {notes && notes.length > 0 ? (

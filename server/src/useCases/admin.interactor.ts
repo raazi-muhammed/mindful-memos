@@ -25,6 +25,38 @@ export async function getUsersInteractor(database: DataBaseType) {
     return await database.getUsers();
 }
 
+export async function getMailListInteractor(database: DataBaseType) {
+    const today = new Date();
+
+    const users = await database.getUsers();
+    const userListingPromise = users.map(async (u) => {
+        const note = await database.getRandomNoteFromUser(u);
+        return {
+            date: today,
+            email: u.email,
+            note,
+        };
+    });
+
+    const userNotes = await Promise.all(userListingPromise);
+    const userListing = userNotes.filter((u) => u.note);
+
+    return userListing;
+}
+
+export async function sendNoteToMailingListInteractor(
+    database: DataBaseType,
+    sendEmail: ({ to, content }: { to: string; content: string }) => null
+) {
+    const userListing = await getMailListInteractor(database);
+    userListing.map((list) => {
+        sendEmail({
+            to: list.email,
+            content: list.note?.title || "Please add a note",
+        });
+    });
+}
+
 export async function setUserBlockStateInteractor(
     database: DataBaseType,
     { userId, blockState }: { userId: string; blockState: boolean }

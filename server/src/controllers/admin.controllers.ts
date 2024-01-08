@@ -1,10 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import database from "../database/database";
-import { UserType } from "../models/user.model";
+import { sendEmail } from "../utils/sendMail";
 import {
     loginAdminInteractor,
     getUsersInteractor,
     setUserBlockStateInteractor,
+    getMailListInteractor,
+    sendNoteToMailingListInteractor,
 } from "../useCases/admin.interactor";
 type ErrorResponse = {
     success: false;
@@ -30,4 +32,11 @@ export async function setUserBlockState({
 
 export async function getUsers() {
     return await getUsersInteractor(database);
+}
+
+export async function getMailList() {
+    return await getMailListInteractor(database);
+}
+export async function sendNoteToMailingList() {
+    const data = await sendNoteToMailingListInteractor(database, sendEmail);
 }

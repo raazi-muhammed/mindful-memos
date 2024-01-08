@@ -2,7 +2,9 @@ import { z } from "zod";
 import {
     loginAdmin,
     getUsers,
+    getMailList,
     setUserBlockState,
+    sendNoteToMailingList,
 } from "../controllers/admin.controllers";
 import { trpc } from "../lib/trpc";
 
@@ -25,4 +27,10 @@ export const adminRouter = trpc.router({
         .mutation(async (opts) => {
             return await setUserBlockState(opts.input);
         }),
+    sendMail: trpc.procedure.mutation(async (opts) => {
+        return await sendNoteToMailingList();
+    }),
+    getMailingList: trpc.procedure.query(async () => {
+        return await getMailList();
+    }),
 });

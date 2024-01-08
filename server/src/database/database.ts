@@ -60,6 +60,14 @@ async function getNotesFromUser(user: UserType) {
     const note = await Note.find({ user: user._id, isDeleted: false });
     return note as NoteType[];
 }
+async function getRandomNoteFromUser(user: UserType) {
+    const randomNote = await Note.aggregate([
+        { $match: { user: user._id, isDeleted: false } },
+        { $sample: { size: 1 } },
+    ]);
+    if (randomNote.length < 1) return null;
+    return randomNote[0] as NoteType;
+}
 async function editNote({
     noteId,
     title,
@@ -90,6 +98,7 @@ export type DataBaseType = {
     getNotesFromUser: typeof getNotesFromUser;
     editUser: typeof editUser;
     setUserBlockState: typeof setUserBlockState;
+    getRandomNoteFromUser: typeof getRandomNoteFromUser;
 };
 const database: DataBaseType = {
     insertUser,
@@ -102,5 +111,6 @@ const database: DataBaseType = {
     deleteNoteById,
     editNote,
     setUserBlockState,
+    getRandomNoteFromUser,
 };
 export default database;

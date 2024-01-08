@@ -18,6 +18,7 @@ import { trpc } from "./lib/trpc";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import Cookies from "js-cookie";
+import AdminMailPage from "./pages/AdminMailPage";
 
 function App() {
     const [queryClient] = useState(() => new QueryClient());
@@ -60,6 +61,10 @@ function App() {
                                     <Route
                                         path="/admin/dashboard"
                                         element={<AdminHomePage />}
+                                    />
+                                    <Route
+                                        path="/admin/mails"
+                                        element={<AdminMailPage />}
                                     />
                                 </Routes>
                             </BrowserRouter>
