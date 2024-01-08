@@ -18,7 +18,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { trpc } from "@/lib/trpc";
 import { IoIosPerson } from "react-icons/io";
 
-export function EditProfile({ userDetails }: { userDetails: UserType }) {
+export function EditProfile({
+    refreshPage,
+    userDetails,
+}: {
+    refreshPage: () => void;
+    userDetails: UserType;
+}) {
     const { toast } = useToast();
     const userEditor = trpc.user.edit.useMutation();
 
@@ -37,8 +43,9 @@ export function EditProfile({ userDetails }: { userDetails: UserType }) {
 
         userEditor
             .mutateAsync(values)
-            .then((res) => {
+            .then(() => {
                 toast({ description: "Edited" });
+                refreshPage();
             })
             .catch((error) => {
                 toast({ description: error?.message });

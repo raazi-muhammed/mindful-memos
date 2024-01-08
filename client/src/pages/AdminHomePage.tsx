@@ -12,6 +12,10 @@ const AdminHomePage = () => {
     const response = trpc.admin.users.useQuery();
     const users = response?.data as UserType[] | [];
 
+    const refreshPage = () => {
+        response.refetch();
+    };
+
     return (
         <main>
             <Container>
@@ -21,7 +25,11 @@ const AdminHomePage = () => {
                 {users ? (
                     <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                         {users.map((user) => (
-                            <UserCard key={user._id} user={user} />
+                            <UserCard
+                                refreshPage={refreshPage}
+                                key={user._id}
+                                user={user}
+                            />
                         ))}
                     </section>
                 ) : null}

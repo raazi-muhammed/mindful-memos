@@ -16,7 +16,8 @@ import { useToast } from "../ui/use-toast";
 import { trpc } from "@/lib/trpc";
 import { NoteType } from "@/types/types";
 import Spinner from "../utils/Spinner";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { RefreshHomePageContext } from "@/pages/HomePage";
 
 const formSchema = z.object({
     title: z.string().min(5, {
@@ -28,6 +29,7 @@ const formSchema = z.object({
 export default function EditNoteForm({ note }: { note: NoteType }) {
     const { toast } = useToast();
     const addNote = trpc.user.editNote.useMutation();
+    const { refreshNotePage } = useContext(RefreshHomePageContext);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -48,6 +50,7 @@ export default function EditNoteForm({ note }: { note: NoteType }) {
             .mutateAsync({ noteId: note._id, ...values })
             .then(() => {
                 toast({ description: "Changes saved" });
+                refreshNotePage();
             })
             .catch((error) => {
                 toast({ description: error?.message });
@@ -95,11 +98,7 @@ export default function EditNoteForm({ note }: { note: NoteType }) {
                     className="w-full"
                     type="submit"
                 >
-                    <Spinner
-                        className="w-fit mx-2"
-                        size={15}
-                        loading={isSubmitting}
-                    />
+                    <Spinner variant="submit" loading={isSubmitting} />
                     <span>Save changes</span>
                 </Button>
             </form>

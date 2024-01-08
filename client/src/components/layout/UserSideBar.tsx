@@ -1,15 +1,25 @@
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
-import { IoIosPerson, IoIosSettings } from "react-icons/io";
+import { IoIosPerson, IoIosSettings, IoIosHome } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 export enum SideBarItem {
     PROFILE = "PROFILE",
     SETTINGS = "SETTINGS",
+    HOME = "HOME",
 }
 const UserSideBar = ({ active }: { active: SideBarItem }) => {
     return (
         <Card className="flex mx-auto p-2 w-fit mt-8 mb-8">
+            <Link to={"/"}>
+                <Button
+                    className="flex flex-col h-16"
+                    variant={active === SideBarItem.HOME ? "default" : "ghost"}
+                >
+                    <IoIosHome size="2em" />
+                    <span className="text-xs">Home</span>
+                </Button>
+            </Link>
             <Link to={"/profile"}>
                 <Button
                     className="flex flex-col h-16"

@@ -22,9 +22,9 @@ import { trpc } from "@/lib/trpc";
 import { useToast } from "../ui/use-toast";
 import { IoIosPerson } from "react-icons/io";
 
-type Props = { user: UserType };
+type Props = { user: UserType; refreshPage: () => void };
 
-const UserCard = ({ user }: Props) => {
+const UserCard = ({ refreshPage, user }: Props) => {
     const setUserBlock = trpc.admin.setUserBlock.useMutation();
     const { toast } = useToast();
 
@@ -33,6 +33,7 @@ const UserCard = ({ user }: Props) => {
             .mutateAsync({ userId: user._id, blockState: true })
             .then(() => {
                 toast({ description: "Blocked" });
+                refreshPage();
             });
     };
     const handleUnBlockUser = () => {
@@ -40,6 +41,7 @@ const UserCard = ({ user }: Props) => {
             .mutateAsync({ userId: user._id, blockState: false })
             .then(() => {
                 toast({ description: "Unblocked" });
+                refreshPage();
             });
     };
 

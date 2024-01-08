@@ -55,7 +55,7 @@ export default function SignUpForm() {
 
         userSignUp
             .mutateAsync(values)
-            .then((res) => {
+            .then(() => {
                 toast({ description: "Account Created" });
                 navigate("/login");
             })
@@ -136,11 +136,7 @@ export default function SignUpForm() {
                     className="w-full"
                     type="submit"
                 >
-                    <Spinner
-                        className="w-fit mx-2"
-                        size={15}
-                        loading={isSubmitting}
-                    />
+                    <Spinner variant="submit" loading={isSubmitting} />
                     <span>Sign Up</span>
                 </Button>
             </form>

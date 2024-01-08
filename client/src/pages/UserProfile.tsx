@@ -11,6 +11,10 @@ const UserProfile = () => {
     const response = trpc.user.profile.useQuery();
     const userData = response?.data as UserType;
 
+    const refreshPage = () => {
+        response.refetch();
+    };
+
     return (
         <Container>
             <UserSideBar active={SideBarItem.PROFILE} />
@@ -34,7 +38,10 @@ const UserProfile = () => {
                             <p> {userData.email}</p>
                         </div>
 
-                        <EditProfile userDetails={userData} />
+                        <EditProfile
+                            refreshPage={refreshPage}
+                            userDetails={userData}
+                        />
                     </section>
                 ) : null}
             </section>

@@ -14,8 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/lib/trpc";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Spinner from "../utils/Spinner";
+import { RefreshHomePageContext } from "@/pages/HomePage";
 
 const formSchema = z.object({
     title: z.string().min(5, {
@@ -39,6 +40,7 @@ export default function NewNoteForm() {
     const { isDirty, isValid } = form.formState;
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const canSubmitForm = !isDirty || !isValid || isSubmitting;
+    const { refreshNotePage } = useContext(RefreshHomePageContext);
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         setIsSubmitting(true);
@@ -47,6 +49,7 @@ export default function NewNoteForm() {
             .then(() => {
                 toast({ description: "Note Added" });
                 form.reset();
+                refreshNotePage();
             })
             .catch((error) => {
                 toast({ description: error?.message });
@@ -95,11 +98,7 @@ export default function NewNoteForm() {
                     className="w-full"
                     type="submit"
                 >
-                    <Spinner
-                        className="w-fit mx-2"
-                        size={15}
-                        loading={isSubmitting}
-                    />
+                    <Spinner variant="submit" loading={isSubmitting} />
                     <span>Add Note</span>
                 </Button>
             </form>
