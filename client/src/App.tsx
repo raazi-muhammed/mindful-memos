@@ -20,6 +20,7 @@ import { Provider } from "react-redux";
 import Cookies from "js-cookie";
 import AdminMailPage from "./pages/AdminMailPage";
 import UserSettingsPage from "./pages/UserSettingsPage";
+import ProtectedRoute from "./lib/ProtectedRoute";
 
 function App() {
     const [queryClient] = useState(() => new QueryClient());
@@ -49,11 +50,19 @@ function App() {
                                     />
                                     <Route
                                         path="/profile"
-                                        element={<UserProfile />}
+                                        element={
+                                            <ProtectedRoute>
+                                                <UserProfile />
+                                            </ProtectedRoute>
+                                        }
                                     />
                                     <Route
                                         path="/settings"
-                                        element={<UserSettingsPage />}
+                                        element={
+                                            <ProtectedRoute>
+                                                <UserSettingsPage />
+                                            </ProtectedRoute>
+                                        }
                                     />
                                     <Route
                                         path="/sign-up"

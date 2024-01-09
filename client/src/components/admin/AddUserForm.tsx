@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -13,52 +14,58 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/lib/trpc";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Spinner from "../utils/Spinner";
+import { useDispatch } from "react-redux";
+import { addUserToUserList } from "@/app/usersListSlice";
+import { UserType } from "@/types/types";
 
 const formSchema = z.object({
-    email: z.string().email().min(2, {
-        message: "Username must be at least 2 characters.",
+    email: z.string().email().min(10, {
+        message: "Username must be at least 2 char.",
     }),
+    username: z.string().min(3),
     password: z.string().min(6),
+    confirmPassword: z.string().min(6),
 });
 
-export default function LoginForm() {
+export default function AddUserForm() {
     const { toast } = useToast();
-    const navigate = useNavigate();
-    const userLogin = trpc.user.login.useMutation();
+    const dispatch = useDispatch();
+    const userSignUp = trpc.user.signUp.useMutation();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
+            username: "",
             password: "",
+            confirmPassword: "",
         },
     });
     const { isDirty, isValid } = form.formState;
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const canSubmitForm = !isDirty || !isValid || isSubmitting;
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        if (values.password !== values.confirmPassword) {
+            form.setError("confirmPassword", {
+                message: "Confirm password doesn't match",
+            });
+            return;
+        }
         setIsSubmitting(true);
-        userLogin
+
+        userSignUp
             .mutateAsync(values)
             .then((res) => {
-                if (res) {
-                    Cookies.set("__crud_app", res);
-                    navigate("/");
-                    window.location.reload();
-                } else {
-                    console.log("no res");
-                }
-                toast({ description: "Logged In" });
+                console.log(res);
+                dispatch(addUserToUserList(res as UserType));
+                toast({ description: "User Created" });
             })
             .catch((error) => {
                 const errorMessage = error?.message;
-                if (errorMessage.toLowerCase().includes("password")) {
-                    form.setError("password", { message: errorMessage });
-                } else if (errorMessage.toLowerCase().includes("user")) {
+                if (errorMessage.toLowerCase().includes("user")) {
                     form.setError("email", { message: errorMessage });
                 } else {
                     toast({ description: error?.message });
@@ -67,7 +74,7 @@ export default function LoginForm() {
             .finally(() => {
                 setIsSubmitting(false);
             });
-    };
+    }
 
     return (
         <Form {...form}>
@@ -91,10 +98,36 @@ export default function LoginForm() {
                 />
                 <FormField
                     control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Username</FormLabel>
+                            <FormControl>
+                                <Input type="text" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
                     name="password"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Password</FormLabel>
+                            <FormControl>
+                                <Input type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Confirm Password</FormLabel>
                             <FormControl>
                                 <Input type="password" {...field} />
                             </FormControl>
@@ -108,7 +141,7 @@ export default function LoginForm() {
                     type="submit"
                 >
                     <Spinner variant="submit" loading={isSubmitting} />
-                    <span>Log In</span>
+                    <span>Add User</span>
                 </Button>
             </form>
         </Form>

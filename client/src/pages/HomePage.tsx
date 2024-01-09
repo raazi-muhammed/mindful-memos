@@ -7,6 +7,7 @@ import Container from "@/components/layout/Container";
 import Heading from "@/components/utils/Heading";
 import Spinner from "@/components/utils/Spinner";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const RefreshHomePageContext = React.createContext({
     refreshNotePage: () => {
@@ -20,6 +21,9 @@ const HomePage = () => {
     const refreshPage = () => {
         notesResponse.refetch();
     };
+
+    const navigate = useNavigate();
+    if (notesResponse.isError) navigate("/login");
 
     return (
         <div className="w-screen">
@@ -53,6 +57,7 @@ const HomePage = () => {
                         notesResponse.isLoading || notesResponse.isRefetching
                     }
                 />
+                <div className="h-24" />
             </Container>
         </div>
     );

@@ -7,7 +7,7 @@ async function insertUser(data: UserObjectType) {
 }
 
 async function getUsers() {
-    const user = await User.find({});
+    const user = await User.find({ isDeleted: false });
     return user as UserType[];
 }
 
@@ -46,6 +46,14 @@ async function setUserBlockState(user: UserType, blockState: boolean) {
     const updatedInfo = await User.updateOne(
         { _id: user._id },
         { isBlocked: blockState },
+        { upsert: true }
+    );
+    return updatedInfo.acknowledged ? true : false;
+}
+async function setUserDeleteState(user: UserType, deleteState: boolean) {
+    const updatedInfo = await User.updateOne(
+        { _id: user._id },
+        { isDeleted: deleteState },
         { upsert: true }
     );
     return updatedInfo.acknowledged ? true : false;
@@ -99,6 +107,7 @@ export type DataBaseType = {
     editUser: typeof editUser;
     setUserBlockState: typeof setUserBlockState;
     getRandomNoteFromUser: typeof getRandomNoteFromUser;
+    setUserDeleteState: typeof setUserDeleteState;
 };
 const database: DataBaseType = {
     insertUser,
@@ -112,5 +121,6 @@ const database: DataBaseType = {
     editNote,
     setUserBlockState,
     getRandomNoteFromUser,
+    setUserDeleteState,
 };
 export default database;

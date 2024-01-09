@@ -23,7 +23,7 @@ const AdminMailPage = () => {
             <Container>
                 <AdminSideBar active={AdminSideBarItem.MAILS} />
                 <section className="flex justify-between">
-                    <Heading>Mail List</Heading>
+                    <Heading>Mail Preview</Heading>
                     <Button onClick={handleSendMail} variant="secondary">
                         Send Test Mail
                     </Button>

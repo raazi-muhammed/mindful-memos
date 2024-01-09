@@ -7,6 +7,7 @@ import {
     setUserBlockStateInteractor,
     getMailListInteractor,
     sendNoteToMailingListInteractor,
+    deleteUserInteractor,
 } from "../useCases/admin.interactor";
 type ErrorResponse = {
     success: false;
@@ -28,6 +29,10 @@ export async function setUserBlockState({
     blockState: boolean;
 }) {
     return await setUserBlockStateInteractor(database, { userId, blockState });
+}
+
+export async function deleteUser(userId: string) {
+    return await deleteUserInteractor(database, userId);
 }
 
 export async function getUsers() {

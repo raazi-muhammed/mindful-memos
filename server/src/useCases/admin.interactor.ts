@@ -81,3 +81,17 @@ export async function setUserBlockStateInteractor(
     }
     return "User Blocked";
 }
+
+export async function deleteUserInteractor(
+    database: DataBaseType,
+    userId: string
+) {
+    const user = await database.getUserById(userId);
+    if (!user) {
+        return throwError(ErrorTypes.INTERNAL_SERVER_ERROR, "User not found");
+    }
+
+    database.setUserDeleteState(user, true);
+
+    return "User Blocked";
+}

@@ -5,6 +5,7 @@ export interface UserObjectType {
     password: string;
     username: string;
     isBlocked: boolean;
+    isDeleted: boolean;
     avatar?: string;
 }
 
@@ -31,6 +32,10 @@ const userSchema = new mongoose.Schema(
             required: true,
         },
         isBlocked: {
+            type: Boolean,
+            default: false,
+        },
+        isDeleted: {
             type: Boolean,
             default: false,
         },
