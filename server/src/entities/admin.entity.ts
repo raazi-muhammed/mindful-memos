@@ -12,12 +12,12 @@ export async function verifyAdmin(
         );
     }
 
-    const encryptedPassword = await comparePassword(
+    const isPasswordCorrect = await comparePassword(
         toCheck.password,
         credentials.password
     );
-    if (encryptedPassword) {
-        return encryptedPassword;
+    if (isPasswordCorrect) {
+        return isPasswordCorrect;
     } else {
         return throwError(
             ErrorTypes.INTERNAL_SERVER_ERROR,

@@ -27,11 +27,14 @@ import { BsThreeDots } from "react-icons/bs";
 import { trpc } from "@/lib/trpc";
 import { useToast } from "../ui/use-toast";
 import { NoteType } from "@/types/types";
+import { RefreshHomePageContext } from "@/pages/HomePage";
+import { useContext } from "react";
 
 type Props = { note: NoteType };
 
 const NoteCardDropDown = ({ note }: Props) => {
     const deleteNote = trpc.user.deleteNote.useMutation();
+    const { refreshNotePage } = useContext(RefreshHomePageContext);
     const { toast } = useToast();
 
     const handleNoteDelete = () => {
@@ -42,6 +45,9 @@ const NoteCardDropDown = ({ note }: Props) => {
             })
             .catch((error) => {
                 toast({ description: error?.message });
+            })
+            .finally(() => {
+                refreshNotePage();
             });
     };
 

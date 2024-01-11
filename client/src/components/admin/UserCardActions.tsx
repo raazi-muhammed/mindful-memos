@@ -13,7 +13,10 @@ import { Button } from "../ui/button";
 import { UserType } from "@/types/types";
 import { trpc } from "@/lib/trpc";
 import { useToast } from "../ui/use-toast";
-import { deleteUserById, setUsersBlockState } from "@/app/usersListSlice";
+import {
+    deleteUserById,
+    setUsersBlockState,
+} from "@/features/userList/usersListSlice";
 import { useDispatch } from "react-redux";
 import { EditUser } from "./EditUser";
 
@@ -95,7 +98,12 @@ const UserCardActions = ({ user }: Props) => {
             {user.isBlocked ? (
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant="secondary">Unblock</Button>
+                        <Button
+                            className="border-2 border-green-700"
+                            variant="secondary"
+                        >
+                            Unblock
+                        </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -119,7 +127,12 @@ const UserCardActions = ({ user }: Props) => {
             ) : (
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant="secondary">Block</Button>
+                        <Button
+                            className="border-2 border-destructive"
+                            variant="secondary"
+                        >
+                            Block
+                        </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>

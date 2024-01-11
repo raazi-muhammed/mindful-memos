@@ -38,7 +38,7 @@ export const usersListSlice = createSlice({
                 payload: {
                     userId: string;
                     email: string;
-                    avatar: string | undefined;
+                    avatar?: string | undefined;
                     username: string;
                 };
             }

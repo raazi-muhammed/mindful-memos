@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { trpc } from "@/lib/trpc";
 import Spinner from "../utils/Spinner";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setAdmin } from "@/features/auth/userSlice";
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -26,6 +28,7 @@ const formSchema = z.object({
 
 export default function AdminLoginForm() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { toast } = useToast();
     const adminLogin = trpc.admin.login.useMutation();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -46,6 +49,7 @@ export default function AdminLoginForm() {
             .mutateAsync(values)
             .then(() => {
                 toast({ description: "Logged In" });
+                dispatch(setAdmin(values));
                 navigate("/admin/dashboard");
             })
             .catch((error) => {

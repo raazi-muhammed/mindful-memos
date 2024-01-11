@@ -18,12 +18,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { trpc } from "@/lib/trpc";
 import { IoIosPerson } from "react-icons/io";
 import { useDispatch } from "react-redux";
-import { editUser } from "@/app/usersListSlice";
+import { editUser } from "@/features/userList/usersListSlice";
 
 export function EditUser({ userDetails }: { userDetails: UserType }) {
     const dispatch = useDispatch();
     const { toast } = useToast();
-    const userEditor = trpc.user.edit.useMutation();
+    const userEditor = trpc.admin.editUser.useMutation();
 
     const [username, setUsername] = useState(userDetails.username);
     const [imageBase64, setimageBase64] = useState<string | undefined>(
@@ -37,15 +37,19 @@ export function EditUser({ userDetails }: { userDetails: UserType }) {
             email: userDetails.email,
             avatar: imageBase64,
         };
+        dispatch(editUser({ userId: userDetails._id, ...values }));
 
         userEditor
             .mutateAsync(values)
             .then(() => {
                 toast({ description: "Edited" });
-                dispatch(editUser({ userId: userDetails._id, ...values }));
             })
             .catch((error) => {
-                toast({ description: error?.message });
+                dispatch(editUser({ userId: userDetails._id, ...userDetails }));
+                toast({
+                    title: "Edit user unsuccessful",
+                    description: error?.message,
+                });
             });
     };
     const onFileChange = async (file: File | null) => {

@@ -20,7 +20,7 @@ import { Provider } from "react-redux";
 import Cookies from "js-cookie";
 import AdminMailPage from "./pages/AdminMailPage";
 import UserSettingsPage from "./pages/UserSettingsPage";
-import ProtectedRoute from "./lib/ProtectedRoute";
+import ProtectedRoute, { AllowedEnum } from "./lib/ProtectedRoute";
 
 function App() {
     const [queryClient] = useState(() => new QueryClient());
@@ -51,7 +51,11 @@ function App() {
                                     <Route
                                         path="/profile"
                                         element={
-                                            <ProtectedRoute>
+                                            <ProtectedRoute
+                                                allowed={
+                                                    AllowedEnum.LOGGED_USER_ONLY
+                                                }
+                                            >
                                                 <UserProfile />
                                             </ProtectedRoute>
                                         }
@@ -59,7 +63,11 @@ function App() {
                                     <Route
                                         path="/settings"
                                         element={
-                                            <ProtectedRoute>
+                                            <ProtectedRoute
+                                                allowed={
+                                                    AllowedEnum.LOGGED_USER_ONLY
+                                                }
+                                            >
                                                 <UserSettingsPage />
                                             </ProtectedRoute>
                                         }
@@ -74,11 +82,23 @@ function App() {
                                     />
                                     <Route
                                         path="/admin/dashboard"
-                                        element={<AdminHomePage />}
+                                        element={
+                                            <ProtectedRoute
+                                                allowed={AllowedEnum.ADMIN_ONLY}
+                                            >
+                                                <AdminHomePage />
+                                            </ProtectedRoute>
+                                        }
                                     />
                                     <Route
                                         path="/admin/mails"
-                                        element={<AdminMailPage />}
+                                        element={
+                                            <ProtectedRoute
+                                                allowed={AllowedEnum.ADMIN_ONLY}
+                                            >
+                                                <AdminMailPage />
+                                            </ProtectedRoute>
+                                        }
                                     />
                                 </Routes>
                             </BrowserRouter>

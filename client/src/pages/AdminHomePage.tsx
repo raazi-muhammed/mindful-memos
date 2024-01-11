@@ -1,5 +1,5 @@
 import { RootState } from "@/app/store";
-import { setUsersList } from "@/app/usersListSlice";
+import { setUsersList } from "@/features/userList/usersListSlice";
 import AddUser from "@/components/admin/AddUser";
 import UserCard from "@/components/admin/UserCard";
 import AdminSideBar, {
@@ -8,27 +8,27 @@ import AdminSideBar, {
 import Container from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import Heading from "@/components/utils/Heading";
 import Spinner from "@/components/utils/Spinner";
 import { trpc } from "@/lib/trpc";
 import { UserType } from "@/types/types";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosSearch } from "react-icons/io";
 
 const AdminHomePage = () => {
-    const response = trpc.admin.users.useQuery();
-    const { toast } = useToast();
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState<UserType[]>([]);
     const users = useSelector((state: RootState) => state.usersList.users);
+
+    const response = trpc.admin.users.useQuery();
+
     const fetchedUsers = response?.data as UserType[] | [];
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setUsersList(fetchedUsers));
-    }, []);
+    }, [response.isInitialLoading]);
 
     const handleSearchInputChange = (searchTerm: string) => {
         setSearchTerm(searchTerm);

@@ -8,6 +8,7 @@ import {
     deleteUser,
 } from "../controllers/admin.controllers";
 import { trpc } from "../lib/trpc";
+import { editProfile } from "../controllers/user.controllers";
 
 const adminLoginProcedure = trpc.procedure.input(
     z.object({
@@ -37,4 +38,15 @@ export const adminRouter = trpc.router({
     getMailingList: trpc.procedure.query(async () => {
         return await getMailList();
     }),
+    editUser: trpc.procedure
+        .input(
+            z.object({
+                email: z.string(),
+                username: z.string(),
+                avatar: z.string().optional(),
+            })
+        )
+        .mutation(async (opts) => {
+            return await editProfile(opts.input);
+        }),
 });

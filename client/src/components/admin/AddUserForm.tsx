@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -17,7 +16,7 @@ import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import Spinner from "../utils/Spinner";
 import { useDispatch } from "react-redux";
-import { addUserToUserList } from "@/app/usersListSlice";
+import { addUserToUserList } from "@/features/userList/usersListSlice";
 import { UserType } from "@/types/types";
 
 const formSchema = z.object({

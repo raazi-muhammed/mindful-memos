@@ -48,6 +48,7 @@ export async function makeUser(
         password: encryptedPassword,
         username,
         isBlocked: false,
+        isDeleted: false,
     };
 
     return user;
