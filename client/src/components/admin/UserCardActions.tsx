@@ -74,7 +74,12 @@ const UserCardActions = ({ user }: Props) => {
             <EditUser userDetails={user} />
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Button variant="secondary">Delete</Button>
+                    <Button
+                        className="bg-red-950 text-red-200"
+                        variant="secondary"
+                    >
+                        Delete
+                    </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -99,7 +104,7 @@ const UserCardActions = ({ user }: Props) => {
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
                         <Button
-                            className="border-2 border-green-700"
+                            className="text-green-200 bg-green-950"
                             variant="secondary"
                         >
                             Unblock
@@ -128,7 +133,7 @@ const UserCardActions = ({ user }: Props) => {
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
                         <Button
-                            className="border-2 border-destructive"
+                            className="bg-red-950 text-red-200"
                             variant="secondary"
                         >
                             Block
