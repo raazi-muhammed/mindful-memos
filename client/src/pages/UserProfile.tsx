@@ -1,11 +1,11 @@
 import { EditProfile } from "@/components/user/EditProfile";
 import Container from "@/components/layout/Container";
-import UserSideBar, { SideBarItem } from "@/components/layout/UserSideBar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { trpc } from "@/lib/trpc";
 import { UserType } from "@/types/types";
 import { IoIosPerson } from "react-icons/io";
 import Spinner from "@/components/utils/Spinner";
+import NavBar from "@/components/layout/NavBar";
 
 const UserProfile = () => {
     const response = trpc.user.profile.useQuery();
@@ -17,31 +17,29 @@ const UserProfile = () => {
 
     return (
         <Container>
-            <UserSideBar active={SideBarItem.PROFILE} />
+            <NavBar />
             <section className="w-full my-auto">
                 <Spinner className="py-36" loading={response.isLoading} />
                 {userData ? (
                     <section className="grid gap-4 max-w-md mx-auto">
-                        <Avatar className="mx-auto">
+                        <Avatar className="mx-auto w-32 h-32">
                             <AvatarImage src={userData.avatar || ""} />
                             <AvatarFallback>
                                 <IoIosPerson size="3em" />
                             </AvatarFallback>
                         </Avatar>
-
-                        <div className="bg-card rounded px-6 py-2">
-                            <p className="text-sm text-muted-foreground">
+                        <div className="bg-card rounded px-6 py-4">
+                            <p className="text-xs text-muted-foreground">
                                 Name
                             </p>
-                            <p> {userData.username}</p>
+                            <p className="text-lg"> {userData.username}</p>
                         </div>
-                        <div className="bg-card rounded px-6 py-2">
-                            <p className="text-sm text-muted-foreground">
+                        <div className="bg-card rounded px-6 py-4">
+                            <p className="text-xs text-muted-foreground">
                                 Email
                             </p>
-                            <p> {userData.email}</p>
+                            <p className="text-lg"> {userData.email}</p>
                         </div>
-
                         <EditProfile
                             refreshPage={refreshPage}
                             userDetails={userData}

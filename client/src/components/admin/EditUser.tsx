@@ -64,7 +64,7 @@ export function EditUser({ userDetails }: { userDetails: UserType }) {
             <DialogTrigger asChild>
                 <Button variant="secondary">Edit</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] bg-card">
                 <DialogHeader>
                     <DialogTitle>Edit User</DialogTitle>
                     <DialogDescription>

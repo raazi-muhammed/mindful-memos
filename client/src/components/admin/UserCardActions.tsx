@@ -74,12 +74,7 @@ const UserCardActions = ({ user }: Props) => {
             <EditUser userDetails={user} />
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Button
-                        className="bg-red-950 text-red-200"
-                        variant="secondary"
-                    >
-                        Delete
-                    </Button>
+                    <Button variant="secondary">Delete</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -103,12 +98,7 @@ const UserCardActions = ({ user }: Props) => {
             {user.isBlocked ? (
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button
-                            className="text-green-200 bg-green-950"
-                            variant="secondary"
-                        >
-                            Unblock
-                        </Button>
+                        <Button variant="secondary">Unblock</Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -132,12 +122,7 @@ const UserCardActions = ({ user }: Props) => {
             ) : (
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button
-                            className="bg-red-950 text-red-200"
-                            variant="secondary"
-                        >
-                            Block
-                        </Button>
+                        <Button variant="secondary">Block</Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>

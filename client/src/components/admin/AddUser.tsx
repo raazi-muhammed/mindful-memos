@@ -14,11 +14,9 @@ const AddUser = () => {
             <DialogTrigger asChild>
                 <Button variant="secondary">Add user</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="max-w-md w-full p-6">
                 <DialogHeader className="p-2">
-                    <DialogTitle className="text-2xl">
-                        Add a new User
-                    </DialogTitle>
+                    <DialogTitle>Add a new User</DialogTitle>
                 </DialogHeader>
                 <section className="p-2">
                     <AddUserForm />

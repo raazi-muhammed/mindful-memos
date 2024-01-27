@@ -18,7 +18,6 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import Cookies from "js-cookie";
 import AdminMailPage from "./pages/AdminMailPage";
-import UserSettingsPage from "./pages/UserSettingsPage";
 import ProtectedRoute, { AllowedEnum } from "./lib/ProtectedRoute";
 
 function App() {
@@ -52,18 +51,6 @@ function App() {
                                             }
                                         >
                                             <UserProfile />
-                                        </ProtectedRoute>
-                                    }
-                                />
-                                <Route
-                                    path="/settings"
-                                    element={
-                                        <ProtectedRoute
-                                            allowed={
-                                                AllowedEnum.LOGGED_USER_ONLY
-                                            }
-                                        >
-                                            <UserSettingsPage />
                                         </ProtectedRoute>
                                     }
                                 />

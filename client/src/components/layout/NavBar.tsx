@@ -21,13 +21,15 @@ const NavBar = () => {
 
     return (
         <nav className="flex max-w-xl mx-auto">
-            <Container className="bg-card rounded flex justify-between align-middle px-8 py-2 my-4 mx-4">
-                <div className="flex gap-2 align-middle">
-                    <FaLeaf className="my-auto text-primary" size="1.2em" />
-                    <p className="text-primary font-semibold text-lg my-auto font-heading">
-                        MindfulMemos
-                    </p>
-                </div>
+            <Container className="bg-card rounded flex justify-between align-middle p-2 py-2 my-4 mx-8">
+                <Link to="/" className="my-auto">
+                    <div className="flex gap-2 align-middle ms-4">
+                        <FaLeaf className="my-auto text-primary" size="1.2em" />
+                        <p className="text-primary font-semibold text-lg my-auto font-heading">
+                            MindfulMemos
+                        </p>
+                    </div>
+                </Link>
                 {userData ? (
                     <UserProfileDropDown userData={userData} />
                 ) : (
