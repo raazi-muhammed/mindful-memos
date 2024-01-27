@@ -17,12 +17,14 @@ import {
 import { Button } from "../ui/button";
 import EditNoteForm from "./EditNoteForm";
 import {
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
 import { BsThreeDots } from "react-icons/bs";
 import { trpc } from "@/lib/trpc";
 import { useToast } from "../ui/use-toast";
@@ -55,30 +57,46 @@ const NoteCardDropDown = ({ note }: Props) => {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="ghost">
+                    <Button
+                        size="icon"
+                        variant="secondary"
+                        className="text-white"
+                    >
                         <BsThreeDots size="1.2em" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
-                    <DialogTrigger asChild>
+                    <DrawerTrigger asChild>
                         <DropdownMenuItem>Edit</DropdownMenuItem>
-                    </DialogTrigger>
+                    </DrawerTrigger>
                     <DropdownMenuItem>View</DropdownMenuItem>
                     <AlertDialogTrigger asChild>
                         <DropdownMenuItem>Delete</DropdownMenuItem>
                     </AlertDialogTrigger>
                 </DropdownMenuContent>
             </DropdownMenu>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Edit Note</DialogTitle>
-                    <DialogDescription>
+            <DrawerContent className="max-w-xl w-full mx-auto max-h-[95vh] align-middle">
+                <DrawerHeader className="px-8">
+                    <DrawerTitle>Edit Note</DrawerTitle>
+                    <DrawerDescription>
                         Make changes to your note here. Click save when you're
                         done.
-                    </DialogDescription>
-                </DialogHeader>
-                <EditNoteForm note={note} />
-            </DialogContent>
+                    </DrawerDescription>
+                </DrawerHeader>
+                <DrawerFooter className="px-8">
+                    <EditNoteForm note={note} />
+
+                    <DrawerClose>
+                        <Button
+                            size="default"
+                            className="w-full"
+                            variant="ghost"
+                        >
+                            Cancel
+                        </Button>
+                    </DrawerClose>
+                </DrawerFooter>
+            </DrawerContent>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
@@ -91,7 +109,7 @@ const NoteCardDropDown = ({ note }: Props) => {
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={handleNoteDelete}>
-                        Continue
+                        Delete
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

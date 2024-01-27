@@ -13,8 +13,8 @@ import { Link } from "react-router-dom";
 export function SignUpPage() {
     return (
         <Container className="grid place-items-center h-screen">
-            <Card className="max-w-sm w-full">
-                <CardHeader>
+            <Card className="max-w-md w-full p-2">
+                <CardHeader className="px-9">
                     <CardTitle>Sign Up</CardTitle>
                     <CardDescription>Create an account</CardDescription>
                 </CardHeader>

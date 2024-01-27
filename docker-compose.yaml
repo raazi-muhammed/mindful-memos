@@ -12,6 +12,11 @@ services:
         environment:
             PORT: 4000
             DB_URL: mongodb+srv://raaziTyping:thisIsAStrongPassword@cluster0.6a4yhtt.mongodb.net/?retryWrites=true&w=majority
+            ADMIN_USERNAME: admin
+            ADMIN_PASSWORD: $2b$10$snT1jKauetAcoLcYuzPpmuT2VXrGI.F/NxxYWBJ2WcbdoqCfuBazC
+            ACCESS_TOKEN_SECRET: 426afb83cd1b514bba661fd0b95b124d597896b43b865cf0b2148efef7e4b7d7bf70aac6405d5585176872db7efed00804c8e1be14f698f394ce8cb0182608cd
+            REFRESH_TOKEN_SECRET: afc6f6c426d32ff08b72b8904050eb0aceb7f5d9dca0fa330be138a9c3dc166756833750b3ac4eee7185e86c9bef134562bc17919a6d1ed4ff590f3b9d9f2f6b
+            SEND_GRID_API_KEY: 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
 
     web:
         build: ./client

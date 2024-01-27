@@ -20,11 +20,11 @@ const NavBar = () => {
     }, [userData]);
 
     return (
-        <nav className="bg-muted flex">
-            <Container className="flex justify-between align-middle px-8 py-2">
+        <nav className="flex max-w-xl mx-auto">
+            <Container className="bg-card rounded flex justify-between align-middle px-8 py-2 my-4 mx-4">
                 <div className="flex gap-2 align-middle">
                     <FaLeaf className="my-auto text-primary" size="1.2em" />
-                    <p className="text-primary font-semibold text-lg my-auto">
+                    <p className="text-primary font-semibold text-lg my-auto font-heading">
                         MindfulMemos
                     </p>
                 </div>

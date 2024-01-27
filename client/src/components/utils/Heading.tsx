@@ -9,7 +9,7 @@ const Heading = ({
     className?: string;
 }) => {
     return (
-        <p className={cn("text-3xl p-2 font-bold", className)}>{children}</p>
+        <p className={cn("text-5xl p-2 font-heading", className)}>{children}</p>
     );
 };
 

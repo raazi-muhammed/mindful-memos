@@ -2,28 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: Optima;
+    src: url("/OPTIMA_B.TTF");
+}
+
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 182 10% 3.9%;
-        --card: 180 90% 98%;
+        --background: 218 38% 86%;
+        --foreground: 240 42% 26%;
+        --card: 0, 0%, 100%;
         --card-foreground: 182 10% 3.9%;
         --popover: 0 0% 100%;
         --popover-foreground: 182 10% 3.9%;
-        --primary: 182 96% 48%;
-        --primary-foreground: 355.7 100% 97.3%;
-        --secondary: 182 94.8% 90.9%;
-        --secondary-foreground: 182 95.9% 10%;
-        --muted: 182 94.8% 90%;
-        --muted-foreground: 182 93.8% 36.1%;
+        --primary: 240 42% 26%;
+        --primary-foreground: 0, 0%, 100%;
+        --secondary: 218 44% 78%;
+        --secondary-foreground: 233 18% 56%;
+        --muted: 218 44% 78%;
+        --muted-foreground: 233 18% 56%;
         --accent: 182 94.8% 95.9%;
         --accent-foreground: 182 95.9% 10%;
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 0 0% 98%;
         --border: 182 5.9% 90%;
         --input: 182 5.9% 90%;
-        --ring: 182.1 86.2% 56.3%;
-        --radius: 1rem;
+        --ring: 240 42% 26%;
+        --radius: 1.5rem;
     }
 
     .dark {
@@ -35,7 +40,7 @@
         --popover-foreground: 0 0% 95%;
         --primary: 182 96% 71%;
         --primary-foreground: 182.9 80.4% 10%;
-        --secondary: 182 38% 10%;
+        --secondary: 218 44% 78%;
         --secondary-foreground: 0 0% 98%;
         --muted: 180 43% 15%;
         --muted-foreground: 182 40% 80%;
@@ -56,4 +61,10 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+.font-heading {
+    font-family: Optima, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
 }
