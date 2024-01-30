@@ -2,13 +2,19 @@ version: "3.8"
 services:
     api:
         build: ./server
+        develop:
+            watch:
+                - action: sync
+                  path: ./server
+                  target: /api
+                  ignore:
+                      - node_modules/
+                - action: rebuild
+                  path: ./server/package.json
         container_name: api_c
         ports:
             - 4000:4000
-        volumes:
-            - ./server:/api
-            - /api/node_modules
-            - /api/dist
+
         environment:
             PORT: 4000
             DB_URL: mongodb+srv://raaziTyping:thisIsAStrongPassword@cluster0.6a4yhtt.mongodb.net/?retryWrites=true&w=majority
@@ -20,12 +26,18 @@ services:
 
     web:
         build: ./client
+        develop:
+            watch:
+                - action: sync
+                  path: ./client
+                  target: /web
+                  ignore:
+                      - node_modules/
+                - action: rebuild
+                  path: ./client/package.json
         container_name: web_c
         ports:
             - 8080:8080
-        volumes:
-            - ./client:/web
-            - /web/node_modules
 
 volumes:
     app-data:

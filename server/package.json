@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "ts-node-dev src/index.ts",
         "build": "rimraf ./dist && tsc",
-        "start": "tsc -w & nodemon dist/index.js"
+        "start": "tsc && node dist/index.js",
+        "watch": "nodemon --watch ./src --ext ts,json --exec \"tsc && node dist/index.js\" --signal SIGTERM"
     },
     "keywords": [],
     "author": "",

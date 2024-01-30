@@ -20,6 +20,8 @@ export async function editNote(noteDetails: {
     content: string;
     userId: string;
 }) {
+    console.log("ss waht ssthing");
+
     return await editNoteInteractor(database, noteDetails);
 }
 
