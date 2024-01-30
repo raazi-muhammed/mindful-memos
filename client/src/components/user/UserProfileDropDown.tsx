@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import {
     DropdownMenu,
-    DropdownMenuContent,
     DropdownMenuGroup,
+    DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -28,7 +28,10 @@ export function UserProfileDropDown({ userData }: { userData: UserType }) {
                 <Button variant="ghost">
                     <p className="me-3">{userData.username}</p>
                     <Avatar className="mx-auto w-8 h-8">
-                        <AvatarImage src={userData.avatar || ""} />
+                        <AvatarImage
+                            src={userData.avatar || ""}
+                            alt="profile image"
+                        />
                         <AvatarFallback className="bg-muted-foreground">
                             <IoIosPerson size="1.3em" />
                         </AvatarFallback>

@@ -28,11 +28,12 @@
     },
     "include": [
         "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
+        "*.ts",
+        "*.tsx",
         ".next/types/**/*.ts",
         "tailwind.config.js",
-        "postcss.config.js"
+        "postcss.config.js",
+        "vite.config.js"
     ],
     "exclude": ["node_modules"],
     "references": [{ "path": "./tsconfig.node.json" }]

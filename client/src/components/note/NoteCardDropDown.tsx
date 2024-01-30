@@ -63,6 +63,7 @@ const NoteCardDropDown = ({ note }: Props) => {
                         className="text-white"
                     >
                         <BsThreeDots size="1.2em" />
+                        <span className="sr-only">Card actions</span>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">

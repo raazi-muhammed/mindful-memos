@@ -1,10 +1,10 @@
-FROM node:21-alpine
+FROM node:21.6-alpine3.18
 
 WORKDIR /web
 
 COPY package*.json .
 
-RUN npm install
+RUN npm install --force
 
 COPY . .
 
