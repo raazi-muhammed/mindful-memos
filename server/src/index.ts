@@ -20,7 +20,7 @@ import { sendNoteToMailingList } from "./controllers/admin.controllers";
 
 app.use(
     cors({
-        origin: "http://localhost:8080",
+        origin: ["http://localhost:8080", "https://mindful-memos.netlify.app"],
         credentials: true,
     })
 );
